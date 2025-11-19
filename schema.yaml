@@ -2926,6 +2926,134 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedCustomerList'
           description: ''
+  /api/v1/customers/{customer_id}/loyalty/:
+    get:
+      operationId: customers_loyalty_retrieve
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      - in: query
+        name: program_id
+        schema:
+          type: integer
+        description: Optional program identifier when the tenant manages multiple
+          loyalty programs.
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLoyalty'
+          description: ''
+  /api/v1/customers/{customer_id}/loyalty/earn/:
+    post:
+      operationId: customers_loyalty_earn_create
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerLoyaltyEarn'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerLoyaltyEarn'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerLoyaltyEarn'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLoyalty'
+          description: ''
+  /api/v1/customers/{customer_id}/loyalty/redeem/:
+    post:
+      operationId: customers_loyalty_redeem_create
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerLoyaltyRedeem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerLoyaltyRedeem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerLoyaltyRedeem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerLoyalty'
+          description: ''
+        '400':
+          description: Invalid points or insufficient balance.
+  /api/v1/customers/{customer_id}/loyalty/transactions/:
+    get:
+      operationId: customers_loyalty_transactions_list
+      parameters:
+      - in: path
+        name: customer_id
+        schema:
+          type: integer
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: program_id
+        schema:
+          type: integer
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLoyaltyTransactionList'
+          description: ''
   /api/v1/customers/{id}/coupons/:
     get:
       operationId: customers_coupons_retrieve
@@ -4304,6 +4432,11 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: revenue_center
+        schema:
+          type: integer
+        description: Filter by revenue center ID
       tags:
       - items
       security:
@@ -5801,6 +5934,47 @@ paths:
               schema:
                 $ref: '#/components/schemas/TimeEntry'
           description: ''
+  /api/v1/loyalty/programs/:
+    get:
+      operationId: loyalty_programs_list
+      tags:
+      - loyalty
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoyaltyProgram'
+          description: ''
+    post:
+      operationId: loyalty_programs_create
+      tags:
+      - loyalty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyProgram'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoyaltyProgram'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoyaltyProgram'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyProgram'
+          description: ''
   /api/v1/menus/:
     get:
       operationId: menus_list
@@ -6249,10 +6423,15 @@ paths:
       description: List all orders for the current tenant with optional filtering
       parameters:
       - in: query
+        name: business_date
+        schema:
+          type: string
+        description: Filter by business date (YYYY-MM-DD, respects tenant cutoff hour)
+      - in: query
         name: date
         schema:
           type: string
-        description: Filter by order date (YYYY-MM-DD)
+        description: Filter by calendar ordered date (YYYY-MM-DD)
       - name: page
         required: false
         in: query
@@ -6313,6 +6492,175 @@ paths:
                 $ref: '#/components/schemas/Order'
           description: ''
         '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+  /api/v1/orders/{order_pk}/checks/:
+    get:
+      operationId: orders_checks_list
+      description: ViewSet for managing checks under a specific order.
+      parameters:
+      - in: path
+        name: order_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CheckList'
+          description: ''
+    post:
+      operationId: orders_checks_create
+      description: ViewSet for managing checks under a specific order.
+      parameters:
+      - in: path
+        name: order_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Check'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Check'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Check'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Check'
+          description: ''
+  /api/v1/orders/{order_pk}/checks/{guid}/:
+    get:
+      operationId: orders_checks_retrieve
+      description: ViewSet for managing checks under a specific order.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: order_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckDetail'
+          description: ''
+    patch:
+      operationId: orders_checks_partial_update
+      description: ViewSet for managing checks under a specific order.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: order_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCheck'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCheck'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCheck'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Check'
+          description: ''
+  /api/v1/orders/{order_pk}/checks/{guid}/items/:
+    post:
+      operationId: orders_checks_items_create
+      description: Assign order items to this check.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: order_pk
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckAssignItems'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CheckAssignItems'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CheckAssignItems'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckDetail'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ''
+        '404':
           content:
             application/json:
               schema:
@@ -6954,7 +7302,7 @@ paths:
         name: date
         schema:
           type: string
-        description: Filter by date (YYYY-MM-DD), defaults to today
+        description: Filter by calendar ordered date (YYYY-MM-DD), defaults to today
       tags:
       - orders
       security:
@@ -6990,17 +7338,17 @@ paths:
         name: date
         schema:
           type: string
-        description: Filter by payment date (YYYY-MM-DD)
+        description: Filter by payment business date (YYYY-MM-DD)
       - in: query
         name: end_date
         schema:
           type: string
-        description: Filter by end date (YYYY-MM-DD)
+        description: Filter by business end date (YYYY-MM-DD)
       - in: query
         name: order
         schema:
           type: integer
-        description: Filter by order ID
+        description: Filter by order ID (via associated check)
       - name: page
         required: false
         in: query
@@ -7022,7 +7370,7 @@ paths:
         name: start_date
         schema:
           type: string
-        description: Filter by start date (YYYY-MM-DD)
+        description: Filter by business start date (YYYY-MM-DD)
       - in: query
         name: status
         schema:
@@ -7399,17 +7747,17 @@ paths:
         name: date
         schema:
           type: string
-        description: Filter by date (YYYY-MM-DD). Defaults to today.
+        description: Filter by business date (YYYY-MM-DD). Defaults to today.
       - in: query
         name: end_date
         schema:
           type: string
-        description: Filter by end date (YYYY-MM-DD)
+        description: Filter by business end date (YYYY-MM-DD)
       - in: query
         name: start_date
         schema:
           type: string
-        description: Filter by start date (YYYY-MM-DD)
+        description: Filter by business start date (YYYY-MM-DD)
       tags:
       - payments
       security:
@@ -7465,6 +7813,343 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
+  /api/v1/pre-modifier-groups/:
+    get:
+      operationId: pre_modifier_groups_list
+      description: Manage groups of pre-modifiers that can be attached to product
+        options.
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+        description: Filter by active status
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - pre-modifier-groups
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPreModifierGroupList'
+          description: ''
+    post:
+      operationId: pre_modifier_groups_create
+      description: Manage groups of pre-modifiers that can be attached to product
+        options.
+      tags:
+      - pre-modifier-groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreModifierGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PreModifierGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PreModifierGroup'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifierGroup'
+          description: ''
+  /api/v1/pre-modifier-groups/{guid}/:
+    get:
+      operationId: pre_modifier_groups_retrieve
+      description: Manage groups of pre-modifiers that can be attached to product
+        options.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifier-groups
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifierGroup'
+          description: ''
+    put:
+      operationId: pre_modifier_groups_update
+      description: Manage groups of pre-modifiers that can be attached to product
+        options.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifier-groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreModifierGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PreModifierGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PreModifierGroup'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifierGroup'
+          description: ''
+    patch:
+      operationId: pre_modifier_groups_partial_update
+      description: Manage groups of pre-modifiers that can be attached to product
+        options.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifier-groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPreModifierGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPreModifierGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPreModifierGroup'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifierGroup'
+          description: ''
+    delete:
+      operationId: pre_modifier_groups_destroy
+      description: Manage groups of pre-modifiers that can be attached to product
+        options.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifier-groups
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/pre-modifiers/:
+    get:
+      operationId: pre_modifiers_list
+      description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
+      parameters:
+      - in: query
+        name: code
+        schema:
+          type: string
+        description: Filter by modifier code (EXTRA/NO/etc.)
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+        description: Filter by active status
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - pre-modifiers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPreModifierList'
+          description: ''
+    post:
+      operationId: pre_modifiers_create
+      description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
+      tags:
+      - pre-modifiers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreModifier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PreModifier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PreModifier'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifier'
+          description: ''
+  /api/v1/pre-modifiers/{guid}/:
+    get:
+      operationId: pre_modifiers_retrieve
+      description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifiers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifier'
+          description: ''
+    put:
+      operationId: pre_modifiers_update
+      description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifiers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreModifier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PreModifier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PreModifier'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifier'
+          description: ''
+    patch:
+      operationId: pre_modifiers_partial_update
+      description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifiers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPreModifier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPreModifier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPreModifier'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreModifier'
+          description: ''
+    delete:
+      operationId: pre_modifiers_destroy
+      description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
+      parameters:
+      - in: path
+        name: guid
+        schema:
+          type: string
+          pattern: ^[0-9a-f-]+$
+        required: true
+      tags:
+      - pre-modifiers
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/product-options/:
     get:
       operationId: product_options_list
@@ -8606,6 +9291,11 @@ paths:
           type: string
         description: Reporting date (YYYY-MM-DD), defaults to today.
       - in: query
+        name: revenue_center
+        schema:
+          type: integer
+        description: Filter sales by revenue center ID.
+      - in: query
         name: top_limit
         schema:
           type: integer
@@ -8744,6 +9434,11 @@ paths:
         schema:
           type: string
         description: End date (YYYY-MM-DD). Defaults to today.
+      - in: query
+        name: group_by
+        schema:
+          type: string
+        description: 'Group totals by an additional dimension (supported: revenue_center).'
       - in: query
         name: period
         schema:
@@ -9841,6 +10536,194 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
+  /api/v1/revenue-centers/:
+    get:
+      operationId: revenue_centers_list
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+        description: Filter by active state.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - revenue-centers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRevenueCenterList'
+          description: ''
+    post:
+      operationId: revenue_centers_create
+      tags:
+      - revenue-centers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevenueCenter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RevenueCenter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RevenueCenter'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueCenter'
+          description: ''
+  /api/v1/revenue-centers/{id}/:
+    get:
+      operationId: revenue_centers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - revenue-centers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueCenter'
+          description: ''
+    put:
+      operationId: revenue_centers_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - revenue-centers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevenueCenter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RevenueCenter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RevenueCenter'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueCenter'
+          description: ''
+    patch:
+      operationId: revenue_centers_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - revenue-centers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRevenueCenter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRevenueCenter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRevenueCenter'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueCenter'
+          description: ''
+    delete:
+      operationId: revenue_centers_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - revenue-centers
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/revenue-centers/{id}/sales-report/:
+    get:
+      operationId: revenue_centers_sales_report_retrieve
+      parameters:
+      - in: query
+        name: end_date
+        schema:
+          type: string
+        description: End date (YYYY-MM-DD), defaults to today.
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: start_date
+        schema:
+          type: string
+        description: Start date (YYYY-MM-DD), defaults to 7 days ago.
+      tags:
+      - revenue-centers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueCenterSalesReport'
+          description: ''
   /api/v1/schema/:
     get:
       operationId: schema_retrieve
@@ -10219,6 +11102,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/TenantGeneralSettings'
+        required: true
       security:
       - jwtAuth: []
       responses:
@@ -14876,6 +15760,11 @@ components:
           type: string
           format: date-time
           nullable: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from the session start time
         opening_balance:
           type: string
           format: decimal
@@ -14940,6 +15829,7 @@ components:
           format: date-time
           readOnly: true
       required:
+      - business_date
       - cash_drawer
       - cash_drawer_name
       - created_at
@@ -14974,6 +15864,10 @@ components:
           type: string
           format: date-time
           nullable: true
+        business_date:
+          type: string
+          format: date
+          description: Business date bucket derived from the session start time
         status:
           $ref: '#/components/schemas/CashDrawerSessionStatusEnum'
         opening_balance:
@@ -14992,6 +15886,7 @@ components:
           pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
           description: Difference between closing and expected (closing - expected)
       required:
+      - business_date
       - cash_drawer_name
       - employee_name
       - id
@@ -15171,12 +16066,12 @@ components:
       - CHANGE_FUND
       - OTHER
       type: string
-      description: "* `CASH_IN` - Cash In (???\n* `SALE` - Sale (?瑕?嗆狡)\n* `CASH_OUT`\
-        \ - Cash Out (?暸??臬)\n* `NO_SALE` - No Sale (?瑹?\n* `PETTY_CASH` - Petty\
-        \ Cash (撠??臬)\n* `SUPPLIER_PAYMENT` - Supplier Payment (靘???甈?\n* `TIP_OUT`\
-        \ - Tip Out (?臭?撠祥)\n* `REFUND` - Refund (?\x80甈?\n* `BANK_DEPOSIT` - Bank\
-        \ Deposit (?\x80銵?甈?\n* `CHANGE_FUND` - Change Fund (?暸???\n* `OTHER`\
-        \ - Other (?嗡?)"
+      description: "* `CASH_IN` - Cash In (???\n* `SALE` - Sale (?瑕?嗆狡)\n* `CASH_OUT`
+        - Cash Out (?暸??臬)\n* `NO_SALE` - No Sale (?瑹?\n* `PETTY_CASH` - Petty
+        Cash (撠??臬)\n* `SUPPLIER_PAYMENT` - Supplier Payment (靘???甈?\n* `TIP_OUT`
+        - Tip Out (?臭?撠祥)\n* `REFUND` - Refund (?\x80甈?\n* `BANK_DEPOSIT` - Bank
+        Deposit (?\x80銵?甈?\n* `CHANGE_FUND` - Change Fund (?暸???\n* `OTHER` -
+        Other (?嗡?)"
     CashFlowBucket:
       type: object
       properties:
@@ -15282,6 +16177,241 @@ components:
         * `maintenance` - Maintenance
         * `marketing` - Marketing
         * `other` - Other
+    Check:
+      type: object
+      description: Base serializer for representing order checks.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_id:
+          type: integer
+          readOnly: true
+        display_number:
+          type: integer
+          readOnly: true
+        tab_name:
+          type: string
+          maxLength: 120
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        payment_status:
+          allOf:
+          - $ref: '#/components/schemas/PaymentStatusEnum'
+          readOnly: true
+        opened_date:
+          type: string
+          format: date-time
+          readOnly: true
+        closed_date:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        outstanding_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - closed_date
+      - created_at
+      - display_number
+      - guid
+      - opened_date
+      - order_id
+      - outstanding_amount
+      - payment_status
+      - tax_amount
+      - total_amount
+      - updated_at
+    CheckAssignItems:
+      type: object
+      description: Serializer for assigning order items to a check.
+      properties:
+        item_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+          description: IDs of order items to move to this check
+      required:
+      - item_ids
+    CheckDetail:
+      type: object
+      description: Detailed serializer including related order items.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_id:
+          type: integer
+          readOnly: true
+        display_number:
+          type: integer
+          readOnly: true
+        tab_name:
+          type: string
+          maxLength: 120
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        payment_status:
+          allOf:
+          - $ref: '#/components/schemas/PaymentStatusEnum'
+          readOnly: true
+        opened_date:
+          type: string
+          format: date-time
+          readOnly: true
+        closed_date:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        outstanding_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+      required:
+      - amount
+      - closed_date
+      - created_at
+      - display_number
+      - guid
+      - items
+      - opened_date
+      - order_id
+      - outstanding_amount
+      - payment_status
+      - tax_amount
+      - total_amount
+      - updated_at
+    CheckList:
+      type: object
+      description: Lightweight serializer for listing checks.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_id:
+          type: integer
+          readOnly: true
+        display_number:
+          type: integer
+          readOnly: true
+        tab_name:
+          type: string
+          maxLength: 120
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        payment_status:
+          allOf:
+          - $ref: '#/components/schemas/PaymentStatusEnum'
+          readOnly: true
+        opened_date:
+          type: string
+          format: date-time
+          readOnly: true
+        closed_date:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        outstanding_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        item_count:
+          type: integer
+          readOnly: true
+      required:
+      - amount
+      - closed_date
+      - created_at
+      - display_number
+      - guid
+      - item_count
+      - opened_date
+      - order_id
+      - outstanding_amount
+      - payment_status
+      - tax_amount
+      - total_amount
+      - updated_at
     CloseDrawer:
       type: object
       description: Serializer for closing a cash drawer
@@ -15315,6 +16445,20 @@ components:
           maxLength: 255
       required:
       - start_date
+    CodeEnum:
+      enum:
+      - EXTRA
+      - 'NO'
+      - LIGHT
+      - SIDE
+      - HEAVY
+      type: string
+      description: |-
+        * `EXTRA` - Extra
+        * `NO` - No
+        * `LIGHT` - Light
+        * `SIDE` - On the Side
+        * `HEAVY` - Heavy
     Coupon:
       type: object
       properties:
@@ -15566,6 +16710,83 @@ components:
       - reservation_count
       - reservations
       - status_breakdown
+    CustomerLoyalty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        customer:
+          type: integer
+          readOnly: true
+        customer_name:
+          type: string
+          readOnly: true
+        program:
+          type: integer
+          readOnly: true
+        program_name:
+          type: string
+          readOnly: true
+        points:
+          type: integer
+          readOnly: true
+        lifetime_points:
+          type: integer
+          readOnly: true
+        tier:
+          allOf:
+          - $ref: '#/components/schemas/LoyaltyTierEnum'
+          readOnly: true
+        tier_config:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - customer
+      - customer_name
+      - id
+      - lifetime_points
+      - points
+      - program
+      - program_name
+      - tier
+      - tier_config
+      - updated_at
+    CustomerLoyaltyEarn:
+      type: object
+      properties:
+        program_id:
+          type: integer
+        points:
+          type: integer
+          minimum: 1
+        description:
+          type: string
+          maxLength: 255
+        order_id:
+          type: integer
+      required:
+      - points
+    CustomerLoyaltyRedeem:
+      type: object
+      properties:
+        program_id:
+          type: integer
+        points:
+          type: integer
+          minimum: 1
+        description:
+          type: string
+          maxLength: 255
+        order_id:
+          type: integer
+      required:
+      - points
     DailySalesOrders:
       type: object
       properties:
@@ -15636,11 +16857,16 @@ components:
           items:
             $ref: '#/components/schemas/DailySalesTopItem'
           readOnly: true
+        revenue_center:
+          allOf:
+          - $ref: '#/components/schemas/RevenueCenterSummary'
+          readOnly: true
       required:
       - date
       - orders
       - payments
       - revenue
+      - revenue_center
       - top_items
     DailySalesRevenue:
       type: object
@@ -15755,6 +16981,12 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         jobs:
           type: array
           items:
@@ -15780,6 +17012,7 @@ components:
       - id
       - is_archived
       - jobs
+      - revenue_center_name
       - tenant
       - updated_at
       - user
@@ -16680,6 +17913,104 @@ components:
       - name
       - tenant
       - updated_at
+    LoyaltyProgram:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        points_per_dollar:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,4})?$
+          description: Number of points awarded for every dollar spent.
+        redemption_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Points required to redeem one unit of currency (e.g. 100 points
+            = 1 currency).
+        tier_config:
+          description: Tier boundary configuration keyed by tier code.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - updated_at
+    LoyaltyTierEnum:
+      enum:
+      - BRONZE
+      - SILVER
+      - GOLD
+      - PLATINUM
+      type: string
+      description: |-
+        * `BRONZE` - Bronze
+        * `SILVER` - Silver
+        * `GOLD` - Gold
+        * `PLATINUM` - Platinum
+    LoyaltyTransaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        transaction_type:
+          allOf:
+          - $ref: '#/components/schemas/LoyaltyTransactionTypeEnum'
+          readOnly: true
+        points:
+          type: integer
+          readOnly: true
+          description: Positive for earn/adjust, negative for redemption or expiration.
+        description:
+          type: string
+          readOnly: true
+        balance_before:
+          type: integer
+          readOnly: true
+        balance_after:
+          type: integer
+          readOnly: true
+        order_id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - balance_after
+      - balance_before
+      - created_at
+      - description
+      - id
+      - order_id
+      - points
+      - transaction_type
+    LoyaltyTransactionTypeEnum:
+      enum:
+      - EARN
+      - REDEEM
+      - ADJUST
+      - EXPIRE
+      type: string
+      description: |-
+        * `EARN` - Earn
+        * `REDEEM` - Redeem
+        * `ADJUST` - Adjust
+        * `EXPIRE` - Expire
     MembershipInfo:
       type: object
       description: |-
@@ -16928,6 +18259,12 @@ components:
         category_name:
           type: string
           readOnly: true
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         name:
           type: string
           maxLength: 100
@@ -17021,6 +18358,7 @@ components:
       - price
       - product_options
       - product_variants
+      - revenue_center_name
       - updated_at
     MenuItemNested:
       type: object
@@ -17103,6 +18441,16 @@ components:
       - is_in_stock
       - name
       - price
+    NestedPricingStrategyEnum:
+      enum:
+      - INHERIT
+      - INDEPENDENT
+      - ADDITIVE
+      type: string
+      description: |-
+        * `INHERIT` - Inherit Parent
+        * `INDEPENDENT` - Independent
+        * `ADDITIVE` - Additive
     OpenDrawer:
       type: object
       description: Serializer for opening a cash drawer
@@ -17147,6 +18495,12 @@ components:
           type: string
           format: email
           maxLength: 254
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         subtotal:
           type: string
           format: decimal
@@ -17173,6 +18527,9 @@ components:
         applied_coupon:
           type: integer
           nullable: true
+        applied_loyalty_info:
+          readOnly: true
+          description: Snapshot of loyalty redemption/earn metadata for this order.
         coupon_code:
           type: string
           readOnly: true
@@ -17180,6 +18537,11 @@ components:
           type: string
           format: date-time
           readOnly: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from tenant configuration
         served_at:
           type: string
           format: date-time
@@ -17209,6 +18571,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderItem'
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckList'
+          readOnly: true
         bills:
           type: array
           items:
@@ -17228,7 +18595,10 @@ components:
           readOnly: true
       required:
       - add_buy_discount_total
+      - applied_loyalty_info
       - bills
+      - business_date
+      - checks
       - coupon_code
       - created_at
       - discount_total
@@ -17237,6 +18607,7 @@ components:
       - order_number
       - ordered_at
       - paid_at
+      - revenue_center_name
       - served_at
       - table
       - tenant
@@ -17298,6 +18669,10 @@ components:
         Serializer for creating a payment from an order
         This bridges the Order and Payment systems
       properties:
+        check:
+          type: string
+          format: uuid
+          description: Check GUID that the payment should be applied to
         payment_method:
           allOf:
           - $ref: '#/components/schemas/PaymentMethodEnum'
@@ -17363,6 +18738,7 @@ components:
           maxLength: 60
       required:
       - amount
+      - check
       - payment_method
     OrderItem:
       type: object
@@ -17374,6 +18750,9 @@ components:
         name:
           type: string
           maxLength: 100
+        display_name:
+          type: string
+          readOnly: true
         menu_item:
           type: integer
           nullable: true
@@ -17381,6 +18760,16 @@ components:
         product_variant:
           type: integer
           nullable: true
+        pre_modifier:
+          type: string
+          format: uuid
+          nullable: true
+        pre_modifier_code:
+          type: string
+          readOnly: true
+        pre_modifier_name:
+          type: string
+          readOnly: true
         variant_summary:
           type: string
           readOnly: true
@@ -17416,6 +18805,10 @@ components:
           format: decimal
           pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
           readOnly: true
+        check_id:
+          type: string
+          format: uuid
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -17425,9 +18818,13 @@ components:
           format: date-time
           readOnly: true
       required:
+      - check_id
       - created_at
+      - display_name
       - id
       - list_price
+      - pre_modifier_code
+      - pre_modifier_name
       - quantity
       - updated_at
       - variant_summary
@@ -17546,7 +18943,12 @@ components:
           type: array
           items: {}
           readOnly: true
+        checks:
+          type: array
+          items: {}
+          readOnly: true
       required:
+      - checks
       - completed_payments
       - failed_payments
       - is_fully_paid
@@ -17920,6 +19322,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Job'
+    PaginatedLoyaltyTransactionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoyaltyTransaction'
     PaginatedMenuCategoryList:
       type: object
       required:
@@ -18035,6 +19460,52 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Payment'
+    PaginatedPreModifierGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreModifierGroup'
+    PaginatedPreModifierList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreModifier'
     PaginatedProductOptionList:
       type: object
       required:
@@ -18104,6 +19575,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Reservation'
+    PaginatedRevenueCenterList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenueCenter'
     PaginatedShiftList:
       type: object
       required:
@@ -18745,6 +20239,64 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PatchedCheck:
+      type: object
+      description: Base serializer for representing order checks.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        order_id:
+          type: integer
+          readOnly: true
+        display_number:
+          type: integer
+          readOnly: true
+        tab_name:
+          type: string
+          maxLength: 120
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        tax_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        payment_status:
+          allOf:
+          - $ref: '#/components/schemas/PaymentStatusEnum'
+          readOnly: true
+        opened_date:
+          type: string
+          format: date-time
+          readOnly: true
+        closed_date:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        outstanding_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedCoupon:
       type: object
       properties:
@@ -18860,6 +20412,12 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         jobs:
           type: array
           items:
@@ -19367,6 +20925,12 @@ components:
         category_name:
           type: string
           readOnly: true
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         name:
           type: string
           maxLength: 100
@@ -19478,6 +21042,12 @@ components:
           type: string
           format: email
           maxLength: 254
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         subtotal:
           type: string
           format: decimal
@@ -19504,6 +21074,9 @@ components:
         applied_coupon:
           type: integer
           nullable: true
+        applied_loyalty_info:
+          readOnly: true
+          description: Snapshot of loyalty redemption/earn metadata for this order.
         coupon_code:
           type: string
           readOnly: true
@@ -19511,6 +21084,11 @@ components:
           type: string
           format: date-time
           readOnly: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from tenant configuration
         served_at:
           type: string
           format: date-time
@@ -19540,6 +21118,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderItem'
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckList'
+          readOnly: true
         bills:
           type: array
           items:
@@ -19588,8 +21171,13 @@ components:
         tenant:
           type: integer
           readOnly: true
-        order:
+        check:
+          type: string
+          format: uuid
+          nullable: true
+        order_id:
           type: integer
+          readOnly: true
         payment_number:
           type: string
           readOnly: true
@@ -19643,6 +21231,11 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from tenant configuration
         refunded_at:
           type: string
           format: date-time
@@ -19680,6 +21273,67 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PatchedPreModifier:
+      type: object
+      description: Serializer for reusable pre-modifier definitions.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        code:
+          $ref: '#/components/schemas/CodeEnum'
+        name_translations: {}
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedPreModifierGroup:
+      type: object
+      description: Serializer for grouping pre-modifiers by use case.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        pre_modifiers:
+          type: array
+          items:
+            type: string
+            format: uuid
+        pre_modifiers_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreModifier'
+          readOnly: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedProductOption:
       type: object
       description: Serializer for product options attached to a menu item.
@@ -19705,6 +21359,39 @@ components:
           maximum: 2147483647
           minimum: 0
           description: Controls ordering of options within a menu item
+        parent_option:
+          type: integer
+          nullable: true
+          description: Optional parent option when building nested modifiers
+        nested_pricing_strategy:
+          allOf:
+          - $ref: '#/components/schemas/NestedPricingStrategyEnum'
+          description: |-
+            Defines how child option prices should be combined with this option
+
+            * `INHERIT` - Inherit Parent
+            * `INDEPENDENT` - Independent
+            * `ADDITIVE` - Additive
+        pre_modifier_group:
+          type: string
+          format: uuid
+          nullable: true
+        pre_modifier_group_name:
+          type: string
+          readOnly: true
+        available_pre_modifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreModifier'
+          readOnly: true
+        nested_options:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          writeOnly: true
+          description: Optional list of child option payloads to create alongside
+            this option
         is_active:
           type: boolean
         created_at:
@@ -19900,6 +21587,34 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PatchedRevenueCenter:
+      type: object
+      description: Base serializer that expects a tenant to be provided via context.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tenant:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        external_id:
+          type: string
+          nullable: true
+          description: External reference identifier from upstream POS or BI systems.
+          maxLength: 64
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedShift:
       type: object
       description: Serializers that require a tenant in context inherit from this
@@ -19925,12 +21640,23 @@ components:
         job_name:
           type: string
           readOnly: true
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         start_time:
           type: string
           format: date-time
         end_time:
           type: string
           format: date-time
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from the shift start time.
         break_duration:
           type: integer
           maximum: 2147483647
@@ -20267,6 +21993,12 @@ components:
           type: integer
           maximum: 2147483647
           minimum: 0
+        business_day_end_hour:
+          type: integer
+          maximum: 23
+          minimum: 0
+          description: Hour (0-23) before which transactions count toward the previous
+            business day.
         created_at:
           type: string
           format: date-time
@@ -20304,6 +22036,12 @@ components:
           type: string
           description: IANA timezone string (e.g., UTC, Asia/Taipei).
           maxLength: 64
+        business_day_end_hour:
+          type: integer
+          maximum: 23
+          minimum: 0
+          description: Hour (0-23) before which activity counts toward the previous
+            business date.
     PatchedTenantInvitationCancel:
       type: object
       properties:
@@ -20399,6 +22137,11 @@ components:
           type: string
           format: date-time
           nullable: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from clock in timestamp.
         break_time:
           type: integer
           maximum: 2147483647
@@ -20462,8 +22205,13 @@ components:
         tenant:
           type: integer
           readOnly: true
-        order:
+        check:
+          type: string
+          format: uuid
+          nullable: true
+        order_id:
           type: integer
+          readOnly: true
         payment_number:
           type: string
           readOnly: true
@@ -20517,6 +22265,11 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from tenant configuration
         refunded_at:
           type: string
           format: date-time
@@ -20556,6 +22309,7 @@ components:
           readOnly: true
       required:
       - amount
+      - business_date
       - can_be_refunded
       - created_at
       - id
@@ -20564,7 +22318,7 @@ components:
       - invoice_status
       - is_fully_refunded
       - net_amount
-      - order
+      - order_id
       - paid_at
       - payment_method
       - payment_number
@@ -20650,6 +22404,81 @@ components:
         * `FAILED` - Failed
         * `REFUNDED` - Refunded
         * `PARTIALLY_REFUNDED` - Partially Refunded
+    PreModifier:
+      type: object
+      description: Serializer for reusable pre-modifier definitions.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        code:
+          $ref: '#/components/schemas/CodeEnum'
+        name_translations: {}
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - guid
+      - name
+      - tenant
+      - updated_at
+    PreModifierGroup:
+      type: object
+      description: Serializer for grouping pre-modifiers by use case.
+      properties:
+        guid:
+          type: string
+          format: uuid
+          readOnly: true
+        tenant:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        pre_modifiers:
+          type: array
+          items:
+            type: string
+            format: uuid
+        pre_modifiers_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreModifier'
+          readOnly: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - guid
+      - name
+      - pre_modifiers_details
+      - tenant
+      - updated_at
     PriceTypeEnum:
       enum:
       - ORIGINAL
@@ -20685,6 +22514,39 @@ components:
           maximum: 2147483647
           minimum: 0
           description: Controls ordering of options within a menu item
+        parent_option:
+          type: integer
+          nullable: true
+          description: Optional parent option when building nested modifiers
+        nested_pricing_strategy:
+          allOf:
+          - $ref: '#/components/schemas/NestedPricingStrategyEnum'
+          description: |-
+            Defines how child option prices should be combined with this option
+
+            * `INHERIT` - Inherit Parent
+            * `INDEPENDENT` - Independent
+            * `ADDITIVE` - Additive
+        pre_modifier_group:
+          type: string
+          format: uuid
+          nullable: true
+        pre_modifier_group_name:
+          type: string
+          readOnly: true
+        available_pre_modifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreModifier'
+          readOnly: true
+        nested_options:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          writeOnly: true
+          description: Optional list of child option payloads to create alongside
+            this option
         is_active:
           type: boolean
         created_at:
@@ -20696,11 +22558,13 @@ components:
           format: date-time
           readOnly: true
       required:
+      - available_pre_modifiers
       - created_at
       - id
       - menu_item
       - menu_item_name
       - name
+      - pre_modifier_group_name
       - updated_at
       - values
     ProductVariant:
@@ -21614,6 +23478,131 @@ components:
       - period_end
       - period_start
       - refunds
+    RevenueCenter:
+      type: object
+      description: Base serializer that expects a tenant to be provided via context.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tenant:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        external_id:
+          type: string
+          nullable: true
+          description: External reference identifier from upstream POS or BI systems.
+          maxLength: 64
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - tenant
+      - updated_at
+    RevenueCenterBreakdown:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          readOnly: true
+        gross:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        refunds:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        net:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        bill_count:
+          type: integer
+          readOnly: true
+        order_count:
+          type: integer
+          readOnly: true
+      required:
+      - bill_count
+      - gross
+      - id
+      - name
+      - net
+      - order_count
+      - refunds
+    RevenueCenterSalesReport:
+      type: object
+      properties:
+        revenue_center_id:
+          type: integer
+          readOnly: true
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+        total_sales:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        order_count:
+          type: integer
+          readOnly: true
+        average_ticket:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+      required:
+      - average_ticket
+      - end_date
+      - order_count
+      - revenue_center_id
+      - revenue_center_name
+      - start_date
+      - total_sales
+    RevenueCenterSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - name
     RevenueReport:
       type: object
       properties:
@@ -21637,10 +23626,16 @@ components:
           type: object
           additionalProperties: {}
           readOnly: true
+        revenue_centers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenueCenterBreakdown'
+          readOnly: true
       required:
       - buckets
       - end_date
       - period
+      - revenue_centers
       - start_date
       - totals
     Shift:
@@ -21668,12 +23663,23 @@ components:
         job_name:
           type: string
           readOnly: true
+        revenue_center:
+          type: integer
+          nullable: true
+        revenue_center_name:
+          type: string
+          readOnly: true
         start_time:
           type: string
           format: date-time
         end_time:
           type: string
           format: date-time
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from the shift start time.
         break_duration:
           type: integer
           maximum: 2147483647
@@ -21697,6 +23703,7 @@ components:
           format: date-time
           readOnly: true
       required:
+      - business_date
       - created_at
       - duration_minutes
       - employee
@@ -21705,6 +23712,7 @@ components:
       - id
       - job
       - job_name
+      - revenue_center_name
       - start_time
       - status
       - tenant
@@ -22379,6 +24387,12 @@ components:
           type: integer
           maximum: 2147483647
           minimum: 0
+        business_day_end_hour:
+          type: integer
+          maximum: 23
+          minimum: 0
+          description: Hour (0-23) before which transactions count toward the previous
+            business day.
         created_at:
           type: string
           format: date-time
@@ -22463,6 +24477,12 @@ components:
           type: integer
           maximum: 2147483647
           minimum: 0
+        business_day_end_hour:
+          type: integer
+          maximum: 23
+          minimum: 0
+          description: Hour (0-23) before which transactions count toward the previous
+            business day.
         created_at:
           type: string
           format: date-time
@@ -22502,6 +24522,14 @@ components:
           type: string
           description: IANA timezone string (e.g., UTC, Asia/Taipei).
           maxLength: 64
+        business_day_end_hour:
+          type: integer
+          maximum: 23
+          minimum: 0
+          description: Hour (0-23) before which activity counts toward the previous
+            business date.
+      required:
+      - business_day_end_hour
     TenantInvitationAccept:
       type: object
       properties:
@@ -22703,6 +24731,11 @@ components:
           type: string
           format: date-time
           nullable: true
+        business_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Business date bucket derived from clock in timestamp.
         break_time:
           type: integer
           maximum: 2147483647
@@ -22757,6 +24790,7 @@ components:
       required:
       - approved_at
       - approved_by
+      - business_date
       - clock_in_source
       - clock_out_source
       - created_at
