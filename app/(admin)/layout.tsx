@@ -1,16 +1,30 @@
-import RootLayout from "@/components/layout/RootLayout";
-import SessionProvider from "@/components/providers/SessionProvider";
+// app/(admin)/layout.tsx
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/authOptions";
 
-/**
- * Admin Layout
- * Wraps admin routes with SessionProvider and RootLayout
- *
- * @evaluated 2025-01-20 (Taiwan Time)
- */
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+import SessionProvider from "@/components/providers/SessionProvider";
+import Providers from "./providers";
+import RootLayout from "@/components/layout/RootLayout";
+
+
+export default async function AdminLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+
+    const session = await getServerSession(authOptions);
+    if (!session || !session.access) {
+
+        redirect("/login");
+    }
+
     return (
         <SessionProvider>
-            <RootLayout>{children}</RootLayout>
+            <Providers>
+                <RootLayout>{children}</RootLayout>
+            </Providers>
         </SessionProvider>
     );
 }

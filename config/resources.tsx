@@ -3,9 +3,19 @@ import {
     TableRestaurant,
     RestaurantMenu,
     ReceiptLong,
+    Layers,
 } from "@mui/icons-material";
 
-export const resources = [
+// Resource configuration with support for nested menu items
+export interface ResourceItem {
+    name: string;
+    label: string;
+    icon: React.ReactElement;
+    route: string;
+    children?: ResourceItem[];
+}
+
+export const resources: ResourceItem[] = [
     {
         name: "dashboard",
         label: "Dashboard",
@@ -17,6 +27,14 @@ export const resources = [
         label: "Table Management",
         icon: <TableRestaurant />,
         route: "/tables",
+        children: [
+            {
+                name: "table-zones",
+                label: "Zone",
+                icon: <Layers />,
+                route: "/tables/zones",
+            },
+        ],
     },
     {
         name: "menus",

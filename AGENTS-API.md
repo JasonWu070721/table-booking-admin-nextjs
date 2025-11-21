@@ -164,6 +164,7 @@ StaffAttendance → TimeEntry (proxy with field aliasing)
 - **Request correlation**: `RequestIDMiddleware` issues an `X-Request-ID` header for every request and logs the same token; clients should echo it in support tickets
 - **Error responses**: Structured error body with `code`, `details[]`, `request_id`, and `documentation_url` (see `ERROR_CODES.md`)
 - **Tag naming**: Avoid TypeScript reserved keywords (for example, `public`, `private`, `default`) when defining OpenAPI tags; `tests/test_openapi_tags.py` enforces this rule for future specs.
+- **OpenAPI validation**: Orval/Spectral is configured to allow kebab-case paths and the `error.details[]` structure (see `orval.config.ts`); do not rename routes or introduce `errors[]`.
 
 ### Business Date Handling
 
