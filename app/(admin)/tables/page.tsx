@@ -15,15 +15,18 @@ import {
     Stack,
     Typography,
     Chip,
+    Autocomplete,
+    CircularProgress,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { useDataGrid } from "@refinedev/mui";
-import { HttpError, useCreate, useUpdate, useDelete, useInvalidate } from "@refinedev/core";
+import { HttpError, useCreate, useUpdate, useDelete, useInvalidate, useList } from "@refinedev/core";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import type { Table } from "@/generated/models/table";
 import type { TableRequest } from "@/generated/models/tableRequest";
+import type { TableZone } from "@/generated/models/tableZone";
 
 /**
  * Tables Management Page
@@ -33,6 +36,7 @@ import type { TableRequest } from "@/generated/models/tableRequest";
 export default function TablesPage() {
     const [openDialog, setOpenDialog] = useState(false);
     const [editingTable, setEditingTable] = useState<Table | null>(null);
+    const [zoneDropdownOpen, setZoneDropdownOpen] = useState(false);
     const [formData, setFormData] = useState<TableRequest>({
         name: "",
         capacity: 2,
@@ -54,6 +58,29 @@ export default function TablesPage() {
             initial: [{ field: "name", order: "asc" }],
         },
     });
+
+    // Fetch zones when dropdown is opened (refetch every time)
+    const zonesQuery = useList<TableZone, HttpError>({
+        resource: "table-zones",
+        pagination: {
+            mode: "off",
+        },
+        filters: [
+            {
+                field: "is_active",
+                operator: "eq",
+                value: true,
+            },
+        ],
+        queryOptions: {
+            enabled: zoneDropdownOpen, // Only fetch when dropdown is open
+            staleTime: 0, // Data is immediately stale
+            gcTime: 0, // Don't keep in cache
+        },
+    });
+
+    const zones = zonesQuery.result?.data ?? [];
+    const zonesLoading = zonesQuery.query?.isLoading ?? false;
 
     // refine CRUD hooks
     const createMutation = useCreate<TableRequest, HttpError>();
@@ -200,7 +227,7 @@ export default function TablesPage() {
             minWidth: 200,
             renderCell: (params) => (
                 <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
-                    {params.row.tag_names.map((tag: string, index: number) => (
+                    {(params.row.tag_names || []).map((tag: string, index: number) => (
                         <Chip key={index} label={tag} size="small" />
                     ))}
                 </Box>
@@ -324,13 +351,38 @@ export default function TablesPage() {
                                 helperText="Minimum guests required (0 = no minimum)"
                             />
 
-                            <TextField
-                                label="Zone ID"
-                                type="number"
-                                fullWidth
-                                value={formData.zone || ""}
-                                onChange={(e) => handleInputChange("zone", e.target.value ? Number(e.target.value) : null)}
-                                helperText="Optional: Assign to a zone"
+                            <Autocomplete<TableZone>
+                                options={zones}
+                                getOptionLabel={(option) => option.name}
+                                value={zones.find((z: TableZone) => z.id === formData.zone) || null}
+                                onChange={(_, newValue) => {
+                                    handleInputChange("zone", newValue?.id ?? null);
+                                }}
+                                onOpen={() => {
+                                    setZoneDropdownOpen(true);
+                                }}
+                                onClose={() => {
+                                    setZoneDropdownOpen(false);
+                                }}
+                                loading={zonesLoading}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Zone"
+                                        helperText="Optional: Assign to a zone"
+                                        slotProps={{
+                                            input: {
+                                                ...params.InputProps,
+                                                endAdornment: (
+                                                    <>
+                                                        {zonesLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                        {params.InputProps.endAdornment}
+                                                    </>
+                                                ),
+                                            },
+                                        }}
+                                    />
+                                )}
                             />
 
                             <FormControlLabel
