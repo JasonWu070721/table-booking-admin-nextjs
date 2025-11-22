@@ -29,6 +29,12 @@ export const resources: ResourceItem[] = [
         route: "/tables",
         children: [
             {
+                name: "table",
+                label: "Table",
+                icon: <Layers />,
+                route: "/tables",
+            },
+            {
                 name: "table-zones",
                 label: "Zone",
                 icon: <Layers />,

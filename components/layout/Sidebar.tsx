@@ -72,15 +72,17 @@ const Drawer = styled(MuiDrawer, {
 interface SidebarProps {
     open: boolean;
     onClose: () => void;
+    onOpen: () => void;
 }
 
 /**
  * Sidebar component with mini variant drawer functionality
  * Supports expand/collapse with smooth animations and nested menu items
+ * Auto-expands sidebar when menu icon is clicked in collapsed state
  *
- * @evaluated 2025-11-21 (Taiwan Time)
+ * @evaluated 2025-11-22 (Taiwan Time)
  */
-export default function Sidebar({ open, onClose }: SidebarProps) {
+export default function Sidebar({ open, onClose, onOpen }: SidebarProps) {
     const theme = useTheme();
     const pathname = usePathname();
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
@@ -90,6 +92,25 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             ...prev,
             [itemName]: !prev[itemName],
         }));
+    };
+
+    const handleMenuItemClick = (item: ResourceItem) => {
+        // If sidebar is collapsed, open it first
+        if (!open) {
+            onOpen();
+            // If item has children, expand it
+            if (item.children && item.children.length > 0) {
+                setExpandedItems((prev) => ({
+                    ...prev,
+                    [item.name]: true,
+                }));
+            }
+        } else {
+            // If sidebar is open and item has children, toggle expand
+            if (item.children && item.children.length > 0) {
+                handleToggleExpand(item.name);
+            }
+        }
     };
 
     const renderMenuItem = (item: ResourceItem, isNested = false) => {
@@ -103,7 +124,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                     {hasChildren ? (
                         <ListItemButton
                             selected={isSelected}
-                            onClick={() => handleToggleExpand(item.name)}
+                            onClick={() => handleMenuItemClick(item)}
                             sx={[
                                 {
                                     minHeight: 48,

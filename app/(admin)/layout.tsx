@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/authOptions";
 
 import SessionProvider from "@/components/providers/SessionProvider";
+import SessionGuard from "@/components/auth/SessionGuard";
 import Providers from "./providers";
 import RootLayout from "@/components/layout/RootLayout";
 
@@ -22,9 +23,11 @@ export default async function AdminLayout({
 
     return (
         <SessionProvider>
-            <Providers>
-                <RootLayout>{children}</RootLayout>
-            </Providers>
+            <SessionGuard>
+                <Providers>
+                    <RootLayout>{children}</RootLayout>
+                </Providers>
+            </SessionGuard>
         </SessionProvider>
     );
 }
