@@ -71,6 +71,7 @@ export const authOptions: NextAuthOptions = {
                     return {
                         ...token,
                         access: refreshedTokens.access,
+                        refresh: refreshedTokens.refresh ?? token.refresh,
                         accessTokenExpires: getTokenExpiration(),
                     };
                 } catch (error) {
