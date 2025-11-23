@@ -38,6 +38,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                         { name: "table-zones", list: "/tables/zones", create: "/tables/zones/create", edit: "/tables/zones/edit/:id" },
                         { name: "reservations", list: "/reservations" },
                         { name: "menus", list: "/menus", create: "/menus/create", edit: "/menus/edit/:id" },
+                        { name: "categories", list: "/categories", create: "/categories/create", edit: "/categories/edit/:id" },
+                        { name: "customers", list: "/customers" },
                     ]}
                     options={{
                         // Disable auth redirect on check failure (we handle this in authProvider)

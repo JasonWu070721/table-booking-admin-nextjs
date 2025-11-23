@@ -11,11 +11,15 @@ import type {
 import * as TablesApi from "../../generated/tables/tables";
 import * as ReservationsApi from "../../generated/reservations/reservations";
 import * as MenusApi from "../../generated/menus/menus";
+import * as CategoriesApi from "../../generated/categories/categories";
+import * as CustomersApi from "../../generated/customers/customers";
 // ...add other domain imports here when new resources are wired up
 
 const tablesApi = TablesApi.getTables();
 const reservationsApi = ReservationsApi.getReservations();
 const menusApi = MenusApi.getMenus();
+const categoriesApi = CategoriesApi.getCategories();
+const customersApi = CustomersApi.getCustomers();
 
 type ResourceConfig = Partial<{
     getList: Function;
@@ -55,6 +59,20 @@ const resourceMap: Record<string, ResourceConfig> = {
         update: menusApi.menusUpdate,
         deleteOne: menusApi.menusDestroy,
     },
+    categories: {
+        getList: categoriesApi.categoriesList,
+        create: categoriesApi.categoriesCreate,
+        getOne: categoriesApi.categoriesRetrieve,
+        update: categoriesApi.categoriesUpdate,
+        deleteOne: categoriesApi.categoriesDestroy,
+    },
+    customers: {
+        getList: customersApi.customersList,
+        getOne: customersApi.customersRetrieve,
+        create: customersApi.customersCreate,
+        update: customersApi.customersPartialUpdate,
+        deleteOne: customersApi.customersDestroy,
+    },
     // ...other resources (orders, employees, revenue-centers, ...)
 };
 
@@ -71,8 +89,11 @@ export const orvalDataProvider: DataProvider = {
 
         // Build query params from refine filters/sorters
         const params: Record<string, any> = {
+            // DRF supports both offset/limit and page/page_size across resources
             limit: pageSize,
             offset: (page - 1) * pageSize,
+            page,
+            page_size: pageSize,
         };
 
         filters?.forEach((filter) => {
@@ -91,12 +112,25 @@ export const orvalDataProvider: DataProvider = {
         // @ts-ignore
         const response = await conf.getList(params);
 
-        const data = (response as any).data ?? (response as any).results ?? response;
-        const meta = (response as any).meta ?? { count: data.length };
+        const rawData = (response as any).data ?? response;
+        const data =
+            Array.isArray(rawData)
+                ? rawData
+                : Array.isArray(rawData?.results)
+                    ? rawData.results
+                    : Array.isArray(rawData?.data?.results)
+                        ? rawData.data.results
+                        : [];
+
+        const total =
+            (response as any).meta?.count ??
+            rawData?.count ??
+            rawData?.data?.count ??
+            data.length;
 
         return {
             data,
-            total: meta.count ?? data.length,
+            total,
         };
     },
 

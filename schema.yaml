@@ -3666,7 +3666,7 @@ paths:
   /api/v1/customers/:
     get:
       operationId: customers_list
-      description: List customer aggregates for the active tenant.
+      description: GET /api/customers/
       parameters:
       - name: page
         required: false
@@ -3700,6 +3700,42 @@ paths:
                 required:
                 - data
           description: ''
+    post:
+      operationId: customers_create
+      description: Manage customer profiles with tenant-scoped CRUD and reservation
+        insights.
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+                  meta:
+                    $ref: '#/components/schemas/EnvelopeMeta'
+                  links:
+                    $ref: '#/components/schemas/EnvelopeLinks'
+                required:
+                - data
+          description: ''
+      parameters: []
   /api/v1/customers/{customer_id}/loyalty/:
     get:
       operationId: customers_loyalty_retrieve
@@ -3876,6 +3912,151 @@ paths:
                 required:
                 - data
           description: ''
+  /api/v1/customers/{id}/:
+    get:
+      operationId: customers_retrieve
+      description: GET /api/customers/{id}/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
+        required: true
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+                  meta:
+                    $ref: '#/components/schemas/EnvelopeMeta'
+                  links:
+                    $ref: '#/components/schemas/EnvelopeLinks'
+                required:
+                - data
+          description: ''
+    put:
+      operationId: customers_update
+      description: Manage customer profiles with tenant-scoped CRUD and reservation
+        insights.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+                  meta:
+                    $ref: '#/components/schemas/EnvelopeMeta'
+                  links:
+                    $ref: '#/components/schemas/EnvelopeLinks'
+                required:
+                - data
+          description: ''
+    patch:
+      operationId: customers_partial_update
+      description: Manage customer profiles with tenant-scoped CRUD and reservation
+        insights.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
+        required: true
+      tags:
+      - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomerRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+                  meta:
+                    $ref: '#/components/schemas/EnvelopeMeta'
+                  links:
+                    $ref: '#/components/schemas/EnvelopeLinks'
+                required:
+                - data
+          description: ''
+    delete:
+      operationId: customers_destroy
+      description: Manage customer profiles with tenant-scoped CRUD and reservation
+        insights.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
+        required: true
+      tags:
+      - customers
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/customers/{id}/coupons/:
     get:
       operationId: customers_coupons_retrieve
@@ -3884,8 +4065,11 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
-          pattern: ^[^/]+$
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
         required: true
       tags:
       - customers
@@ -3921,11 +4105,25 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
-          pattern: ^[^/]+$
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
         required: true
       tags:
       - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
       security:
       - jwtAuth: []
       responses:
@@ -3952,8 +4150,11 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
-          pattern: ^[^/]+$
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        description: A unique integer value identifying this customer.
         required: true
       tags:
       - customers
@@ -20862,25 +21063,53 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           readOnly: true
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
         name:
           type: string
-          readOnly: true
+          maxLength: 120
         email:
           type: string
-          readOnly: true
+          format: email
+          maxLength: 254
         phone:
           type: string
-          readOnly: true
+          maxLength: 40
+        user:
+          type: integer
+          nullable: true
+          description: Linked user account when the customer has registered.
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        source:
+          enum:
+          - RESERVATION
+          - USER
+          - MANUAL
+          type: string
+          x-spec-enum-id: 189e52f43b3bbeca
+          description: Origin of this customer profile.
+        external_identifier:
+          type: string
+          nullable: true
+          description: Stable identifier derived from reservation aggregates or external
+            systems.
+          maxLength: 128
+        metadata: {}
         first_reservation:
           type: string
           format: date-time
           readOnly: true
+          nullable: true
         last_reservation:
           type: string
           format: date-time
           readOnly: true
+          nullable: true
         reservation_count:
           type: integer
           readOnly: true
@@ -20895,16 +21124,23 @@ components:
           additionalProperties:
             type: integer
           readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
-      - email
+      - created_at
       - first_reservation
       - id
       - last_reservation
       - last_status
-      - name
-      - phone
       - reservation_count
       - status_breakdown
+      - updated_at
     CustomerCoupon:
       type: object
       properties:
@@ -20987,42 +21223,8 @@ components:
       - valid_to
     CustomerHistory:
       type: object
-      description: Combines customer aggregate metadata with reservation history.
+      description: Combines customer metadata with reservation history.
       properties:
-        id:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          readOnly: true
-        phone:
-          type: string
-          readOnly: true
-        first_reservation:
-          type: string
-          format: date-time
-          readOnly: true
-        last_reservation:
-          type: string
-          format: date-time
-          readOnly: true
-        reservation_count:
-          type: integer
-          readOnly: true
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
-        last_status:
-          type: string
-          readOnly: true
-        status_breakdown:
-          type: object
-          additionalProperties:
-            type: integer
-          readOnly: true
         reservations:
           type: array
           items:
@@ -21031,16 +21233,7 @@ components:
           minItems: 0
           maxItems: 2147483647
       required:
-      - email
-      - first_reservation
-      - id
-      - last_reservation
-      - last_status
-      - name
-      - phone
-      - reservation_count
       - reservations
-      - status_breakdown
     CustomerLoyalty:
       type: object
       properties:
@@ -21154,6 +21347,41 @@ components:
           maximum: 9007199254740991
       required:
       - points
+    CustomerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 40
+        user:
+          type: integer
+          nullable: true
+          description: Linked user account when the customer has registered.
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        source:
+          enum:
+          - RESERVATION
+          - USER
+          - MANUAL
+          type: string
+          x-spec-enum-id: 189e52f43b3bbeca
+          description: Origin of this customer profile.
+        external_identifier:
+          type: string
+          nullable: true
+          description: Stable identifier derived from reservation aggregates or external
+            systems.
+          maxLength: 128
+        metadata: {}
     DailySalesOrders:
       type: object
       properties:
@@ -25559,6 +25787,41 @@ components:
             maximum: 9007199254740991
           minItems: 0
           maxItems: 2147483647
+        metadata: {}
+    PatchedCustomerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 40
+        user:
+          type: integer
+          nullable: true
+          description: Linked user account when the customer has registered.
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        source:
+          enum:
+          - RESERVATION
+          - USER
+          - MANUAL
+          type: string
+          x-spec-enum-id: 189e52f43b3bbeca
+          description: Origin of this customer profile.
+        external_identifier:
+          type: string
+          nullable: true
+          description: Stable identifier derived from reservation aggregates or external
+            systems.
+          maxLength: 128
         metadata: {}
     PatchedEmployeeRequest:
       type: object

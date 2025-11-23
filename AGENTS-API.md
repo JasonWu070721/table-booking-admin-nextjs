@@ -46,6 +46,12 @@ This document defines the **roles**, **permissions**, **data boundaries**, and *
 - ✅ Self-service customer reservation management
 - ✅ Walk-in queue system with ticket management
 
+**Customer Directory (UPDATED - 2025-11-23):**
+- ✅ Tenant-scoped `Customer` profiles with name/email/phone/user/source/metadata/external_identifier
+- ✅ Full CRUD via `/api/v1/customers/` with aggregated reservation insights (counts, last status, first/last reservation)
+- ✅ Reservation history export + CSV export of customer directory
+- ✅ Coupon and loyalty actions now resolve customers by persisted profile ID
+
 **Order & Payment:**
 - ✅ Food/beverage ordering with line items
 - ✅ Order status workflow (PENDING → SERVED → PAID)
@@ -360,10 +366,10 @@ Labor Management (NEW - 2025-11-08):
 - Currently has full CRUD (future: zone/shift scoped)
 - Cannot access financial reports or settings
 
-**Customer** (planned)
+**Customer** (external/self-service)
 - Self-service reservations via `/api/v1/reservations/me/` (legacy alias `/api/my/reservations/`)
-- Currently email-based with `IsReservationCustomer` permission
-- Dedicated membership role pending implementation
+- Profiles are persisted per-tenant and manageable by staff via `/api/v1/customers/**`
+- Self-service remains email-based with `IsReservationCustomer`; dedicated customer membership role is still planned
 
 ### Permission Matrix (Simplified)
 
@@ -375,6 +381,7 @@ Labor Management (NEW - 2025-11-08):
 | Tables/Reservations | ✓ | ✓ | ✓ | ✗ | ✗ |
 | Orders/Payments | ✓ | ✓ | ✓ | ✗ | ✗ |
 | Menu Management | ✓ | ✓ | ✓ | ✗ | ✗ |
+| Customer profiles | ✓ | ✓ | ✓ | ✗ | ✗ |
 | Financial Reports | ✓ | ✓ | ✗ | ✗ | ✗ |
 | Employee Management | ✓ | ✓ | Self only | ✗ | ✗ |
 | Job/Shift/Break Mgmt | ✓ | ✓ | ✗ | ✗ | ✗ |
@@ -425,6 +432,20 @@ POST   /api/tenants/{uuid}/invitations/        # Create invitation
 PATCH  /api/tenants/{uuid}/invitations/{id}/   # Cancel invitation
 POST   /api/invitations/accept/                # Accept invitation (by token)
 POST   /api/invitations/resend/                # Resend invitation
+```
+
+### Customer Management
+
+```
+GET    /api/v1/customers/                      # List customers with aggregated reservation stats
+POST   /api/v1/customers/                      # Create customer profile
+GET    /api/v1/customers/{id}/                 # Retrieve customer profile + stats
+PATCH  /api/v1/customers/{id}/                 # Update customer profile
+DELETE /api/v1/customers/{id}/                 # Delete customer profile
+GET    /api/v1/customers/{id}/history/         # Reservation history for a customer
+GET    /api/v1/customers/export/               # CSV export of customer directory
+GET    /api/v1/customers/{id}/coupons/         # List coupons issued to a customer
+POST   /api/v1/customers/{id}/coupons/{coupon_id}/use/ # Redeem a specific coupon for a customer
 ```
 
 ### Public Discovery (Anonymous)

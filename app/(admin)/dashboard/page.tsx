@@ -7,7 +7,7 @@ import { Box, Container, Typography, Paper } from "@mui/material";
  * Main admin dashboard for table booking management
  * @date 2025-11-19 (Taiwan Time)
  */
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     <Box
       sx={{

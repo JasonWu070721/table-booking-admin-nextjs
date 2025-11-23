@@ -6,6 +6,8 @@ import {
     Layers,
 } from "@mui/icons-material";
 
+import PeopleIcon from '@mui/icons-material/People';
+
 // Resource configuration with support for nested menu items
 export interface ResourceItem {
     name: string;
@@ -40,6 +42,12 @@ export const resources: ResourceItem[] = [
                 icon: <Layers />,
                 route: "/tables/zones",
             },
+            {
+                name: "categories",
+                label: "Categories",
+                icon: <Layers />,
+                route: "/categories",
+            },
         ],
     },
     {
@@ -53,5 +61,11 @@ export const resources: ResourceItem[] = [
         label: "Order Management",
         icon: <ReceiptLong />,
         route: "/orders",
+    },
+    {
+        name: "customers",
+        label: "Customer Management",
+        icon: <PeopleIcon />,
+        route: "/customers",
     },
 ];
