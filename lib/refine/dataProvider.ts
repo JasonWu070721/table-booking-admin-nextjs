@@ -16,6 +16,7 @@ import * as CustomersApi from "../../generated/customers/customers";
 import * as OrdersApi from "../../generated/orders/orders";
 import * as CouponsApi from "../../generated/coupons/coupons";
 import * as LoyaltyApi from "../../generated/loyalty/loyalty";
+import * as ItemsApi from "../../generated/items/items";
 // ...add other domain imports here when new resources are wired up
 
 const tablesApi = TablesApi.getTables();
@@ -26,6 +27,7 @@ const customersApi = CustomersApi.getCustomers();
 const ordersApi = OrdersApi.getOrders();
 const couponsApi = CouponsApi.getCoupons();
 const loyaltyApi = LoyaltyApi.getLoyalty();
+const itemsApi = ItemsApi.getItems();
 
 type ResourceConfig = Partial<{
     getList: Function;
@@ -97,6 +99,13 @@ const resourceMap: Record<string, ResourceConfig> = {
         getList: loyaltyApi.loyaltyProgramsList,
         create: loyaltyApi.loyaltyProgramsCreate,
     },
+    items: {
+        getList: itemsApi.itemsList,
+        getOne: itemsApi.itemsRetrieve,
+        create: itemsApi.itemsCreate,
+        update: itemsApi.itemsPartialUpdate,
+        deleteOne: itemsApi.itemsDestroy,
+    },
     // ...other resources (employees, revenue-centers, ...)
 };
 
@@ -140,14 +149,21 @@ export const orvalDataProvider: DataProvider = {
         const data =
             Array.isArray(rawData)
                 ? rawData
-                : Array.isArray(rawData?.results)
-                    ? rawData.results
-                    : Array.isArray(rawData?.data?.results)
-                        ? rawData.data.results
-                        : [];
+                : Array.isArray(rawData?.data)
+                    ? rawData.data
+                    : Array.isArray(rawData?.results)
+                        ? rawData.results
+                        : Array.isArray(rawData?.data?.results)
+                            ? rawData.data.results
+                            : Array.isArray(rawData?.data?.data)
+                                ? rawData.data.data
+                                : [];
 
         const total =
+            (response as any).meta?.total_count ??
             (response as any).meta?.count ??
+            rawData?.meta?.total_count ??
+            rawData?.data?.meta?.total_count ??
             rawData?.count ??
             rawData?.data?.count ??
             data.length;
@@ -179,6 +195,7 @@ export const orvalDataProvider: DataProvider = {
         // @ts-ignore: signature depends on generated API
         const response = await conf.create(variables);
         const data = (response as any).data ?? response;
+
         return { data };
     },
 
