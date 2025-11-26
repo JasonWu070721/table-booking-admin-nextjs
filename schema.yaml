@@ -3080,6 +3080,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return categories updated at or after this timestamp (ISO-8601).
       tags:
       - categories
       security:
@@ -5802,6 +5808,12 @@ paths:
         schema:
           type: integer
         description: Filter by revenue center ID
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return menu items updated at or after this timestamp (ISO-8601).
       tags:
       - items
       security:
@@ -6447,6 +6459,11 @@ paths:
   /api/v1/labor/employees/:
     get:
       operationId: labor_employees_list
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - name: page
         required: false
@@ -6482,6 +6499,11 @@ paths:
           description: ''
     post:
       operationId: labor_employees_create
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       tags:
       - labor
       requestBody:
@@ -6518,6 +6540,11 @@ paths:
   /api/v1/labor/employees/{id}/:
     get:
       operationId: labor_employees_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6550,6 +6577,11 @@ paths:
           description: ''
     put:
       operationId: labor_employees_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6594,6 +6626,11 @@ paths:
           description: ''
     patch:
       operationId: labor_employees_partial_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6637,6 +6674,11 @@ paths:
           description: ''
     delete:
       operationId: labor_employees_destroy
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6657,6 +6699,11 @@ paths:
   /api/v1/labor/employees/{id}/archive/:
     put:
       operationId: labor_employees_archive_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6702,6 +6749,11 @@ paths:
   /api/v1/labor/employees/{id}/jobs/:
     put:
       operationId: labor_employees_jobs_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6747,6 +6799,11 @@ paths:
   /api/v1/labor/employees/{id}/performance/:
     get:
       operationId: labor_employees_performance_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6780,6 +6837,11 @@ paths:
   /api/v1/labor/employees/{id}/shifts/:
     get:
       operationId: labor_employees_shifts_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6813,6 +6875,11 @@ paths:
   /api/v1/labor/employees/{id}/time-entries/:
     get:
       operationId: labor_employees_time_entries_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6846,6 +6913,11 @@ paths:
   /api/v1/labor/employees/{id}/unarchive/:
     put:
       operationId: labor_employees_unarchive_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6891,6 +6963,11 @@ paths:
   /api/v1/labor/employees/{id}/wage-overrides/:
     put:
       operationId: labor_employees_wage_overrides_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -6936,6 +7013,11 @@ paths:
   /api/v1/labor/jobs/:
     get:
       operationId: labor_jobs_list
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - name: page
         required: false
@@ -6949,6 +7031,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return jobs updated at or after this timestamp (ISO-8601).
       tags:
       - labor
       security:
@@ -6971,6 +7059,11 @@ paths:
           description: ''
     post:
       operationId: labor_jobs_create
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       tags:
       - labor
       requestBody:
@@ -7007,6 +7100,11 @@ paths:
   /api/v1/labor/jobs/{id}/:
     get:
       operationId: labor_jobs_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -7039,6 +7137,11 @@ paths:
           description: ''
     put:
       operationId: labor_jobs_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -7083,6 +7186,11 @@ paths:
           description: ''
     patch:
       operationId: labor_jobs_partial_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -7126,6 +7234,11 @@ paths:
           description: ''
     delete:
       operationId: labor_jobs_destroy
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -10171,6 +10284,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return variants updated at or after this timestamp (ISO-8601).
       tags:
       - pre-modifier-groups
       security:
@@ -10390,6 +10509,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return options updated at or after this timestamp (ISO-8601).
       tags:
       - pre-modifiers
       security:
@@ -13463,6 +13588,11 @@ paths:
   /api/v1/revenue-centers/:
     get:
       operationId: revenue_centers_list
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: query
         name: is_active
@@ -13481,6 +13611,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return revenue centers updated at or after this timestamp (ISO-8601).
       tags:
       - revenue-centers
       security:
@@ -13503,6 +13639,11 @@ paths:
           description: ''
     post:
       operationId: revenue_centers_create
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       tags:
       - revenue-centers
       requestBody:
@@ -13539,6 +13680,11 @@ paths:
   /api/v1/revenue-centers/{id}/:
     get:
       operationId: revenue_centers_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -13568,6 +13714,11 @@ paths:
           description: ''
     put:
       operationId: revenue_centers_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -13609,6 +13760,11 @@ paths:
           description: ''
     patch:
       operationId: revenue_centers_partial_update
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -13649,6 +13805,11 @@ paths:
           description: ''
     delete:
       operationId: revenue_centers_destroy
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: path
         name: id
@@ -13666,6 +13827,11 @@ paths:
   /api/v1/revenue-centers/{id}/sales-report/:
     get:
       operationId: revenue_centers_sales_report_retrieve
+      description: |-
+        Adds `updated_after` filtering and X-Last-Modified response header for list endpoints.
+
+        Designed for tenant-scoped viewsets that expose timestamped resources and must support
+        incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
       - in: query
         name: end_date
@@ -15977,6 +16143,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return zones updated at or after this timestamp (ISO-8601).
       tags:
       - tables
       security:
@@ -16314,6 +16486,12 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: updated_after
+        schema:
+          type: string
+          format: date-time
+        description: Return tables updated at or after this timestamp (ISO-8601).
       tags:
       - tables
       security:
@@ -18462,11 +18640,6 @@ components:
           format: int64
           minimum: 0
           maximum: 9007199254740991
-        collection:
-          type: integer
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         menu_item:
           type: integer
           format: int64
@@ -18546,6 +18719,7 @@ components:
       properties:
         collection:
           type: integer
+          writeOnly: true
           format: int64
           minimum: 0
           maximum: 9007199254740991
@@ -18667,7 +18841,6 @@ components:
         is_active:
           type: boolean
       required:
-      - collection
       - menu_item
     AddBuyPreviewRequestRequest:
       type: object

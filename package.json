@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
+    "@mui/x-data-grid": "^8.19.0",
     "@refinedev/core": "^5.0.6",
     "@refinedev/mui": "^7.0.1",
     "@umijs/openapi": "^1.14.1",

@@ -13,6 +13,7 @@ import * as ReservationsApi from "../../generated/reservations/reservations";
 import * as MenusApi from "../../generated/menus/menus";
 import * as CategoriesApi from "../../generated/categories/categories";
 import * as CustomersApi from "../../generated/customers/customers";
+import * as OrdersApi from "../../generated/orders/orders";
 // ...add other domain imports here when new resources are wired up
 
 const tablesApi = TablesApi.getTables();
@@ -20,6 +21,7 @@ const reservationsApi = ReservationsApi.getReservations();
 const menusApi = MenusApi.getMenus();
 const categoriesApi = CategoriesApi.getCategories();
 const customersApi = CustomersApi.getCustomers();
+const ordersApi = OrdersApi.getOrders();
 
 type ResourceConfig = Partial<{
     getList: Function;
@@ -72,6 +74,13 @@ const resourceMap: Record<string, ResourceConfig> = {
         create: customersApi.customersCreate,
         update: customersApi.customersPartialUpdate,
         deleteOne: customersApi.customersDestroy,
+    },
+    orders: {
+        getList: ordersApi.ordersList,
+        getOne: ordersApi.ordersRetrieve,
+        create: ordersApi.ordersCreate,
+        update: ordersApi.ordersPartialUpdate,
+        deleteOne: ordersApi.ordersDestroy,
     },
     // ...other resources (orders, employees, revenue-centers, ...)
 };

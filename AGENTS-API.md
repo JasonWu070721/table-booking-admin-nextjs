@@ -13,6 +13,7 @@ This document defines the **roles**, **permissions**, **data boundaries**, and *
 - **Authentication**: SimpleJWT (access/refresh tokens)
 - **API Documentation**: drf-spectacular (OpenAPI 3.0)
 - **Testing**: pytest-django
+- **Validation Coverage**: Serializer test suites now enforce tenant isolation and business rules across addbuys, cash, orders, payments, and menus (90%+ target coverage)
 - **Platform**: Windows 11
 
 ### Technology Stack
@@ -159,6 +160,15 @@ StaffAttendance → TimeEntry (proxy with field aliasing)
 - `EmployeeAccessPermission` - employee data (Owner/Admin full, Member self-only)
 - `TimeEntryApprovalPermission` - time entry approval (Manager+)
 - `AllowAny` - public endpoints (venue discovery, anonymous reservations)
+- **Permission testing guardrail**: Keep `IsOwnerAdminOrMember` coverage at 95%+ for menus and orders using pytest-django. Explicitly exercise list-action behavior for multi-tenant users without `current_tenant`, inactive memberships, and cross-tenant object access to prevent silent privilege leaks.
+
+### AddBuys Promotion Testing Guardrails (2025-11-24)
+
+- Maintain 90%+ coverage for `apps/addbuys/serializers.py`, `services.py`, and `views.py`; prioritize validation branches (tenant boundaries, variant-menu alignment, time windows, inventory checks).
+- Required scenarios: collection/item CRUD, batch item replace validation (duplicates, cross-tenant payloads), trigger rules (ORDER_AMOUNT, MENU_ITEM match modes, CATEGORY by id/name), expiration/disabled collections, and tenant isolation across availability/preview endpoints.
+- Inventory flows: reserve/release must prevent negative stock, reject oversell, and cap per-order limits; include concurrent-like double-reserve attempts in tests.
+- Order coupling: verify add-buy lines update order totals/discounts and backfill inventory on update flows; cover statistics aggregation (attach rate, revenue, discounts).
+- Edge cases: negative or missing pricing inputs, zero or exhausted inventory, future/past time windows, large quantities, and `is_add_buy` payloads missing `add_buy_item`.
 
 ### API Conventions (2025-11-04)
 
@@ -171,6 +181,7 @@ StaffAttendance → TimeEntry (proxy with field aliasing)
 - **Error responses**: Structured error body with `code`, `details[]`, `request_id`, and `documentation_url` (see `ERROR_CODES.md`)
 - **Tag naming**: Avoid TypeScript reserved keywords (for example, `public`, `private`, `default`) when defining OpenAPI tags; `tests/test_openapi_tags.py` enforces this rule for future specs.
 - **OpenAPI validation**: Orval/Spectral is configured to allow kebab-case paths and the `error.details[]` structure (see `orval.config.ts`); do not rename routes or introduce `errors[]`.
+- **Incremental sync**: Menu categories/items, employees/jobs, tables/zones, revenue centers, and product options/variants support `updated_after` (ISO-8601, tz-aware) to filter by `updated_at >=` and return `X-Last-Modified` with the newest `updated_at` in the current page (works with pagination).
 
 ### Business Date Handling
 
