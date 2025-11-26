@@ -14,6 +14,8 @@ import * as MenusApi from "../../generated/menus/menus";
 import * as CategoriesApi from "../../generated/categories/categories";
 import * as CustomersApi from "../../generated/customers/customers";
 import * as OrdersApi from "../../generated/orders/orders";
+import * as CouponsApi from "../../generated/coupons/coupons";
+import * as LoyaltyApi from "../../generated/loyalty/loyalty";
 // ...add other domain imports here when new resources are wired up
 
 const tablesApi = TablesApi.getTables();
@@ -22,6 +24,8 @@ const menusApi = MenusApi.getMenus();
 const categoriesApi = CategoriesApi.getCategories();
 const customersApi = CustomersApi.getCustomers();
 const ordersApi = OrdersApi.getOrders();
+const couponsApi = CouponsApi.getCoupons();
+const loyaltyApi = LoyaltyApi.getLoyalty();
 
 type ResourceConfig = Partial<{
     getList: Function;
@@ -82,7 +86,18 @@ const resourceMap: Record<string, ResourceConfig> = {
         update: ordersApi.ordersPartialUpdate,
         deleteOne: ordersApi.ordersDestroy,
     },
-    // ...other resources (orders, employees, revenue-centers, ...)
+    coupons: {
+        getList: couponsApi.couponsList,
+        getOne: couponsApi.couponsRetrieve,
+        create: couponsApi.couponsCreate,
+        update: couponsApi.couponsPartialUpdate,
+        deleteOne: couponsApi.couponsDestroy,
+    },
+    loyalty: {
+        getList: loyaltyApi.loyaltyProgramsList,
+        create: loyaltyApi.loyaltyProgramsCreate,
+    },
+    // ...other resources (employees, revenue-centers, ...)
 };
 
 export const orvalDataProvider: DataProvider = {
