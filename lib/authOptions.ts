@@ -23,9 +23,9 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 try {
-
                     const tokens = await obtainToken(credentials.email, credentials.password);
                     const userProfile = await getUserProfile(tokens.access);
+
                     const user = {
                         id: userProfile.id,
                         email: userProfile.email,

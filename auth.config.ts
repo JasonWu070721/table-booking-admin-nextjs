@@ -9,5 +9,6 @@ export const authConfig = {
     error: "/login",
   },
 
-  providers: [], // Add providers in [...nextauth]/route.ts
+  // Note: providers are added in lib/authOptions.ts
+  // Do NOT add empty providers array here as it may interfere with the spread operator
 };

@@ -19,7 +19,6 @@ rawAxios.interceptors.response.use(
     async (error: AxiosError) => {
         // Handle 401 Unauthorized errors
         if (error.response?.status === 401) {
-            // Redirect to login page
             await signOut({ callbackUrl: "/login" });
         }
         return Promise.reject(error);
@@ -27,8 +26,8 @@ rawAxios.interceptors.response.use(
 );
 
 const unauthenticatedPaths = new Set([
-    "/api/v1/token/",
-    "/api/v1/token/refresh/",
+    "/api/v1/token",
+    "/api/v1/token/refresh",
 ]);
 
 export const axiosClient = async <T>(config: AuthAwareRequestConfig): Promise<T> => {
@@ -38,14 +37,20 @@ export const axiosClient = async <T>(config: AuthAwareRequestConfig): Promise<T>
         (typeof axiosConfig.url === "string" && unauthenticatedPaths.has(axiosConfig.url)) ||
         Boolean(accessTokenOverride);
 
-    const session = await getSession();
-
-    // Check if session exists and token is not expired
+    // Only get session if we need authentication (and we're on client side or have accessTokenOverride)
+    let session = null;
     if (!shouldSkipAuth) {
-        if (!session || session.error === "RefreshAccessTokenError") {
-            // Redirect to login if no valid session or token refresh failed
-            await signOut({ callbackUrl: "/login" });
-            throw new Error("Authentication required");
+        // getSession is a client-side function, check if we're on client side
+        const isServer = typeof window === 'undefined';
+        if (!isServer) {
+            session = await getSession();
+
+            // Check if session exists and token is not expired
+            if (!session || session.error === "RefreshAccessTokenError") {
+                // Redirect to login if no valid session or token refresh failed
+                await signOut({ callbackUrl: "/login" });
+                throw new Error("Authentication required");
+            }
         }
     }
 

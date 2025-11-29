@@ -41,17 +41,16 @@ export interface UserProfile {
  */
 export async function obtainToken(email: string, password: string): Promise<TokenResponse> {
   const tokenApi = getToken();
+
   try {
     const envelope = await tokenApi.tokenCreate({ email, password });
     const tokens = (envelope as TokenCreate200).data;
 
     // Validate token structure
     if (!tokens.access || !tokens.refresh) {
-      console.error("[Auth] Invalid token response structure:", envelope);
       throw new Error("Invalid token response from server");
     }
 
-    console.log("[Auth] Tokens obtained successfully");
     return {
       access: tokens.access,
       refresh: tokens.refresh,
@@ -81,10 +80,9 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
     const envelope = await tokenApi.tokenRefreshCreate({ refresh: refreshToken });
     const tokens = (envelope as TokenRefreshCreate200).data;
 
-    console.log("[Auth] Token refreshed successfully");
     return {
       access: tokens.access,
-      refresh: tokens.refresh || refreshToken, // Keep old refresh token if not returned
+      refresh: refreshToken, // Keep the same refresh token (Django doesn't return a new one)
     };
   } catch (error) {
     const axiosError = error as AxiosError<{ detail?: string }>;
@@ -109,14 +107,14 @@ export async function getUserProfile(accessToken: string): Promise<UserProfile> 
   try {
     // Use Orval-generated client with explicit token (pre-session)
     const envelope = await axiosClient<UsersMeRetrieve200>({
-      url: `/api/v1/users/me/`,
+      url: `/api/v1/users/me`,  // No trailing slash - backend has APPEND_SLASH=False
       method: "GET",
       skipAuth: true,
       accessTokenOverride: accessToken,
     });
+
     const user = envelope.data;
 
-    console.log("[Auth] User profile fetched:", user.email);
     return {
       id: user.id,
       email: user.email,

@@ -3,8 +3,12 @@ info:
   title: Reservation API
   version: 1.0.0
   description: API docs
+  contact:
+    name: Table Booking API Team
+    email: api@table-booking.app
+    url: https://table-booking.app/support
 paths:
-  /api/v1/add-buy-collections/:
+  /api/v1/add-buy-collections:
     get:
       operationId: add_buy_collections_list
       tags:
@@ -31,6 +35,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/add-buy-collections operation
       parameters: []
     post:
       operationId: add_buy_collections_create
@@ -66,8 +71,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/add-buy-collections operation
       parameters: []
-  /api/v1/add-buy-collections/{id}/:
+  /api/v1/add-buy-collections/{id}:
     get:
       operationId: add_buy_collections_retrieve
       parameters:
@@ -100,6 +106,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/add-buy-collections/{id} operation
     put:
       operationId: add_buy_collections_update
       parameters:
@@ -144,6 +151,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PUT /api/v1/add-buy-collections/{id} operation
     patch:
       operationId: add_buy_collections_partial_update
       parameters:
@@ -187,6 +195,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PATCH /api/v1/add-buy-collections/{id} operation
     delete:
       operationId: add_buy_collections_destroy
       parameters:
@@ -206,7 +215,8 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/add-buy-collections/{id}/items/batch/:
+      description: DELETE /api/v1/add-buy-collections/{id} operation
+  /api/v1/add-buy-collections/{id}/items/batch:
     post:
       operationId: add_buy_collections_items_batch_create
       parameters:
@@ -251,7 +261,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/add-buy-collections/{id}/statistics/:
+      description: POST /api/v1/add-buy-collections/{id}/items/batch operation
+  /api/v1/add-buy-collections/{id}/statistics:
     get:
       operationId: add_buy_collections_statistics_retrieve
       parameters:
@@ -284,7 +295,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/add-buy-items/:
+      description: GET /api/v1/add-buy-collections/{id}/statistics operation
+  /api/v1/add-buy-items:
     get:
       operationId: add_buy_items_list
       tags:
@@ -311,6 +323,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/add-buy-items operation
       parameters: []
     post:
       operationId: add_buy_items_create
@@ -346,8 +359,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/add-buy-items operation
       parameters: []
-  /api/v1/add-buy-items/{id}/:
+  /api/v1/add-buy-items/{id}:
     get:
       operationId: add_buy_items_retrieve
       parameters:
@@ -380,6 +394,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/add-buy-items/{id} operation
     put:
       operationId: add_buy_items_update
       parameters:
@@ -424,6 +439,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PUT /api/v1/add-buy-items/{id} operation
     patch:
       operationId: add_buy_items_partial_update
       parameters:
@@ -467,6 +483,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PATCH /api/v1/add-buy-items/{id} operation
     delete:
       operationId: add_buy_items_destroy
       parameters:
@@ -486,7 +503,8 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/add-buys/available/:
+      description: DELETE /api/v1/add-buy-items/{id} operation
+  /api/v1/add-buys/available:
     post:
       operationId: add_buys_available_create
       tags:
@@ -521,8 +539,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/add-buys/available operation
       parameters: []
-  /api/v1/add-buys/preview/:
+  /api/v1/add-buys/preview:
     post:
       operationId: add_buys_preview_create
       tags:
@@ -557,24 +576,25 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/add-buys/preview operation
       parameters: []
-  /api/v1/approval-requests/:
+  /api/v1/approval-requests:
     get:
       operationId: approval_requests_list
       description: Provides read access and state transitions for approval requests.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: mine
         schema:
           type: string
         description: When set to true, only requests submitted by the current user
           are returned.
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -611,7 +631,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/approval-requests/{id}/:
+  /api/v1/approval-requests/{id}:
     get:
       operationId: approval_requests_retrieve
       description: Provides read access and state transitions for approval requests.
@@ -644,7 +664,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/approval-requests/{id}/approve/:
+  /api/v1/approval-requests/{id}/approve:
     post:
       operationId: approval_requests_approve_create
       description: Provides read access and state transitions for approval requests.
@@ -701,7 +721,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/approval-requests/{id}/cancel/:
+  /api/v1/approval-requests/{id}/cancel:
     post:
       operationId: approval_requests_cancel_create
       description: Provides read access and state transitions for approval requests.
@@ -758,7 +778,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/approval-requests/{id}/reject/:
+  /api/v1/approval-requests/{id}/reject:
     post:
       operationId: approval_requests_reject_create
       description: Provides read access and state transitions for approval requests.
@@ -814,17 +834,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/approval-requests/my-requests/:
+  /api/v1/approval-requests/my-requests:
     get:
       operationId: approval_requests_my_requests_list
       description: Provides read access and state transitions for approval requests.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -851,17 +871,17 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/approval-requests/pending/:
+  /api/v1/approval-requests/pending:
     get:
       operationId: approval_requests_pending_list
       description: Provides read access and state transitions for approval requests.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -888,19 +908,19 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/approval-rules/:
+  /api/v1/approval-rules:
     get:
       operationId: approval_rules_list
       description: |-
         CRUD endpoints for configuring approval rules.
         Only tenant owners can create or mutate rules.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -965,7 +985,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/approval-rules/{id}/:
+  /api/v1/approval-rules/{id}:
     get:
       operationId: approval_rules_retrieve
       description: |-
@@ -1116,11 +1136,17 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/bills/:
+  /api/v1/bills:
     get:
       operationId: bills_list
       description: List all bills for the current tenant with optional filtering
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: date
         schema:
@@ -1136,12 +1162,6 @@ paths:
         schema:
           type: integer
         description: Filter by order ID
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -1213,7 +1233,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
       parameters: []
-  /api/v1/bills/{id}/:
+  /api/v1/bills/{id}:
     get:
       operationId: bills_retrieve
       description: |-
@@ -1225,6 +1245,11 @@ paths:
 
         Bills link to orders and aggregate payment information with tax,
         service charges, and discounts applied.
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -1374,6 +1399,11 @@ paths:
 
         Bills link to orders and aggregate payment information with tax,
         service charges, and discounts applied.
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -1388,7 +1418,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/bills/{id}/create-payment/:
+  /api/v1/bills/{id}/create-payment:
     post:
       operationId: bills_create_payment_create
       description: |-
@@ -1445,7 +1475,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/merge/:
+  /api/v1/bills/{id}/merge:
     post:
       operationId: bills_merge_create
       description: Merge additional bills into the current bill.
@@ -1494,7 +1524,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/payment-summary/:
+  /api/v1/bills/{id}/payment-summary:
     get:
       operationId: bills_payment_summary_retrieve
       description: |-
@@ -1533,25 +1563,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/payments/:
+  /api/v1/bills/{id}/payments:
     get:
       operationId: bills_payments_list
       description: |-
         List all payments for this bill
         Includes all payment statuses and methods
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: path
         name: id
         schema:
           type: string
           pattern: ^[0-9]+$
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -1584,7 +1614,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/pdf/:
+  /api/v1/bills/{id}/pdf:
     get:
       operationId: bills_pdf_retrieve
       description: |-
@@ -1624,7 +1654,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/split-by-items/:
+  /api/v1/bills/{id}/split-by-items:
     post:
       operationId: bills_split_by_items_create
       description: Split the bill by assigning order items to participants.
@@ -1673,7 +1703,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/split-equally/:
+  /api/v1/bills/{id}/split-equally:
     post:
       operationId: bills_split_equally_create
       description: Split the bill evenly across the provided number of participants.
@@ -1722,7 +1752,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/splits/{split_id}/ratio/:
+  /api/v1/bills/{id}/splits/{split_id}/ratio:
     patch:
       operationId: bills_splits_ratio_partial_update
       description: Adjust the ratios of an existing ratio-based split.
@@ -1782,7 +1812,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/bills/{id}/void/:
+  /api/v1/bills/{id}/void:
     post:
       operationId: bills_void_create
       description: |-
@@ -1838,19 +1868,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawer-sessions/:
+  /api/v1/cash-drawer-sessions:
     get:
       operationId: cash_drawer_sessions_list
       description: |-
         ViewSet for viewing cash drawer sessions
         Read-only - sessions are created/updated through drawer operations
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -1877,7 +1907,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/cash-drawer-sessions/{id}/:
+  /api/v1/cash-drawer-sessions/{id}:
     get:
       operationId: cash_drawer_sessions_retrieve
       description: |-
@@ -1910,22 +1940,22 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/cash-drawers/:
+  /api/v1/cash-drawers:
     get:
       operationId: cash_drawers_list
       description: List all cash drawers for the current tenant
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
           type: boolean
         description: Filter by active status
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -2006,7 +2036,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/cash-drawers/{id}/:
+  /api/v1/cash-drawers/{id}:
     get:
       operationId: cash_drawers_retrieve
       description: |-
@@ -2225,7 +2255,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/cash-drawers/{id}/balance/:
+  /api/v1/cash-drawers/{id}/balance:
     get:
       operationId: cash_drawers_balance_retrieve
       description: Get current balance and warnings
@@ -2277,7 +2307,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/cash-in/:
+  /api/v1/cash-drawers/{id}/cash-in:
     post:
       operationId: cash_drawers_cash_in_create
       description: Add cash to drawer (e.g., replenishing change fund)
@@ -2332,7 +2362,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/cash-out/:
+  /api/v1/cash-drawers/{id}/cash-out:
     post:
       operationId: cash_drawers_cash_out_create
       description: Remove cash from drawer (e.g., supplier payment, petty cash)
@@ -2387,7 +2417,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/close/:
+  /api/v1/cash-drawers/{id}/close:
     post:
       operationId: cash_drawers_close_create
       description: |-
@@ -2457,11 +2487,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/entries/:
+  /api/v1/cash-drawers/{id}/entries:
     get:
       operationId: cash_drawers_entries_list
       description: Get cash entries for this drawer with optional date filtering
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: date
         schema:
@@ -2478,12 +2514,6 @@ paths:
           type: string
           pattern: ^[0-9]+$
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -2521,7 +2551,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/no-sale/:
+  /api/v1/cash-drawers/{id}/no-sale:
     post:
       operationId: cash_drawers_no_sale_create
       description: Open cash drawer without making a sale (e.g., for testing or making
@@ -2577,7 +2607,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/open/:
+  /api/v1/cash-drawers/{id}/open:
     post:
       operationId: cash_drawers_open_create
       description: |-
@@ -2635,7 +2665,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/summary/:
+  /api/v1/cash-drawers/{id}/summary:
     get:
       operationId: cash_drawers_summary_retrieve
       description: Get drawer summary for current session
@@ -2700,7 +2730,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-drawers/{id}/variance-report/:
+  /api/v1/cash-drawers/{id}/variance-report:
     get:
       operationId: cash_drawers_variance_report_retrieve
       description: |-
@@ -2779,7 +2809,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/cash-entries/:
+  /api/v1/cash-entries:
     get:
       operationId: cash_entries_list
       description: |-
@@ -2787,12 +2817,12 @@ paths:
         Most entries are created automatically through drawer operations
         Manual entries can be created for corrections
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -2858,7 +2888,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/cash-entries/{id}/:
+  /api/v1/cash-entries/{id}:
     get:
       operationId: cash_entries_retrieve
       description: |-
@@ -3001,7 +3031,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/cash-entries/{id}/void/:
+  /api/v1/cash-entries/{id}/void:
     post:
       operationId: cash_entries_void_create
       description: |-
@@ -3058,22 +3088,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/categories/:
+  /api/v1/categories:
     get:
       operationId: categories_list
       description: List all menu categories for current tenant
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
           type: boolean
         description: Filter by active status
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -3147,7 +3177,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/categories/{id}/:
+  /api/v1/categories/{id}:
     get:
       operationId: categories_retrieve
       description: |-
@@ -3298,7 +3328,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/coupons/:
+  /api/v1/coupons:
     get:
       operationId: coupons_list
       description: Administrative CRUD for coupon definitions.
@@ -3363,7 +3393,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/coupons/{id}/:
+  /api/v1/coupons/{id}:
     get:
       operationId: coupons_retrieve
       description: Administrative CRUD for coupon definitions.
@@ -3506,7 +3536,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/coupons/{id}/issue/:
+  /api/v1/coupons/{id}/issue:
     post:
       operationId: coupons_issue_create
       description: Administrative CRUD for coupon definitions.
@@ -3552,7 +3582,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/coupons/{id}/issue-batch/:
+  /api/v1/coupons/{id}/issue-batch:
     post:
       operationId: coupons_issue_batch_create
       description: Administrative CRUD for coupon definitions.
@@ -3598,7 +3628,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/coupons/{id}/usage-stats/:
+  /api/v1/coupons/{id}/usage-stats:
     get:
       operationId: coupons_usage_stats_retrieve
       description: Administrative CRUD for coupon definitions.
@@ -3632,17 +3662,17 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/coupons/me/:
+  /api/v1/coupons/me:
     get:
       operationId: coupons_me_list
       description: List coupons available to the authenticated customer.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -3669,17 +3699,17 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/:
+  /api/v1/customers:
     get:
       operationId: customers_list
-      description: GET /api/customers/
+      description: GET /api/customers
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -3742,7 +3772,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/customers/{customer_id}/loyalty/:
+  /api/v1/customers/{customer_id}/loyalty:
     get:
       operationId: customers_loyalty_retrieve
       parameters:
@@ -3780,7 +3810,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/{customer_id}/loyalty/earn/:
+      description: GET /api/v1/customers/{customer_id}/loyalty operation
+  /api/v1/customers/{customer_id}/loyalty/earn:
     post:
       operationId: customers_loyalty_earn_create
       parameters:
@@ -3824,7 +3855,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/{customer_id}/loyalty/redeem/:
+      description: POST /api/v1/customers/{customer_id}/loyalty/earn operation
+  /api/v1/customers/{customer_id}/loyalty/redeem:
     post:
       operationId: customers_loyalty_redeem_create
       parameters:
@@ -3870,10 +3902,17 @@ paths:
           description: ''
         '400':
           description: Invalid points or insufficient balance.
-  /api/v1/customers/{customer_id}/loyalty/transactions/:
+      description: POST /api/v1/customers/{customer_id}/loyalty/redeem operation
+  /api/v1/customers/{customer_id}/loyalty/transactions:
     get:
       operationId: customers_loyalty_transactions_list
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: path
         name: customer_id
         schema:
@@ -3882,12 +3921,6 @@ paths:
           minimum: 0
           maximum: 9007199254740991
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -3918,10 +3951,11 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/{id}/:
+      description: GET /api/v1/customers/{customer_id}/loyalty/transactions operation
+  /api/v1/customers/{id}:
     get:
       operationId: customers_retrieve
-      description: GET /api/customers/{id}/
+      description: GET /api/customers/{id}
       parameters:
       - in: path
         name: id
@@ -4063,10 +4097,10 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/customers/{id}/coupons/:
+  /api/v1/customers/{id}/coupons:
     get:
       operationId: customers_coupons_retrieve
-      description: GET /api/customers/{id}/coupons/
+      description: GET /api/customers/{id}/coupons
       parameters:
       - in: path
         name: id
@@ -4097,10 +4131,10 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/{id}/coupons/{coupon_id}/use/:
+  /api/v1/customers/{id}/coupons/{coupon_id}/use:
     post:
       operationId: customers_coupons_use_create
-      description: POST /api/customers/{id}/coupons/{coupon_id}/use/
+      description: POST /api/customers/{id}/coupons/{coupon_id}/use
       parameters:
       - in: path
         name: coupon_id
@@ -4148,10 +4182,10 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/{id}/history/:
+  /api/v1/customers/{id}/history:
     get:
       operationId: customers_history_retrieve
-      description: GET /api/customers/{id}/history/
+      description: GET /api/customers/{id}/history
       parameters:
       - in: path
         name: id
@@ -4182,7 +4216,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/customers/export/:
+  /api/v1/customers/export:
     get:
       operationId: customers_export_retrieve
       description: GET /api/customers/export/
@@ -4207,17 +4241,17 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/einvoices/allowances/:
+  /api/v1/einvoices/allowances:
     get:
       operationId: einvoices_allowances_list
       description: Manage invoice allowances (credit notes).
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -4280,7 +4314,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/einvoices/allowances/{id}/:
+  /api/v1/einvoices/allowances/{id}:
     get:
       operationId: einvoices_allowances_retrieve
       description: Manage invoice allowances (credit notes).
@@ -4410,7 +4444,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/einvoices/allowances/{id}/void/:
+  /api/v1/einvoices/allowances/{id}/void:
     post:
       operationId: einvoices_allowances_void_create
       description: Manage invoice allowances (credit notes).
@@ -4452,17 +4486,17 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/einvoices/invoices/:
+  /api/v1/einvoices/invoices:
     get:
       operationId: einvoices_invoices_list
       description: Issue and manage invoices.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -4525,7 +4559,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/einvoices/invoices/{id}/:
+  /api/v1/einvoices/invoices/{id}:
     get:
       operationId: einvoices_invoices_retrieve
       description: Issue and manage invoices.
@@ -4656,7 +4690,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/einvoices/invoices/{id}/void/:
+  /api/v1/einvoices/invoices/{id}/void:
     post:
       operationId: einvoices_invoices_void_create
       description: Issue and manage invoices.
@@ -4699,17 +4733,17 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/einvoices/tracks/:
+  /api/v1/einvoices/tracks:
     get:
       operationId: einvoices_tracks_list
       description: Manage invoice tracks per tenant.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -4772,7 +4806,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/einvoices/tracks/{id}/:
+  /api/v1/einvoices/tracks/{id}:
     get:
       operationId: einvoices_tracks_retrieve
       description: Manage invoice tracks per tenant.
@@ -4903,7 +4937,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/einvoices/tracks/{id}/set-default/:
+  /api/v1/einvoices/tracks/{id}/set-default:
     post:
       operationId: einvoices_tracks_set_default_create
       description: Manage invoice tracks per tenant.
@@ -4946,7 +4980,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/expenses/:
+  /api/v1/expenses:
     get:
       operationId: expenses_list
       description: |-
@@ -4966,17 +5000,17 @@ paths:
           - supplies
           - utilities
         description: Filter by expense category.
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: end_date
         schema:
           type: string
         description: Filter up to this date (YYYY-MM-DD).
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -5059,7 +5093,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
       parameters: []
-  /api/v1/expenses/{id}/:
+  /api/v1/expenses/{id}:
     get:
       operationId: expenses_retrieve
       description: |-
@@ -5216,7 +5250,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/invitations/accept/:
+  /api/v1/invitations/accept:
     post:
       operationId: invitations_accept_create
       description: |-
@@ -5281,7 +5315,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
       parameters: []
-  /api/v1/invitations/resend/:
+  /api/v1/invitations/resend:
     post:
       operationId: invitations_resend_create
       description: |-
@@ -5333,17 +5367,17 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
       parameters: []
-  /api/v1/item-collections/:
+  /api/v1/item-collections:
     get:
       operationId: item_collections_list
       description: ViewSet for managing menu item collections (custom, smart, combo).
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -5406,7 +5440,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/item-collections/{id}/:
+  /api/v1/item-collections/{id}:
     get:
       operationId: item_collections_retrieve
       description: ViewSet for managing menu item collections (custom, smart, combo).
@@ -5537,7 +5571,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/item-collections/{id}/items/:
+  /api/v1/item-collections/{id}/items:
     post:
       operationId: item_collections_items_create
       description: Add a menu item to a collection (CUSTOM/COMBO only).
@@ -5584,7 +5618,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/item-collections/{id}/items/{item_id}/:
+  /api/v1/item-collections/{id}/items/{item_id}:
     delete:
       operationId: item_collections_items_destroy
       description: Remove a menu item from a collection (CUSTOM/COMBO only).
@@ -5617,7 +5651,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/item-collections/{id}/items/manual-order/:
+  /api/v1/item-collections/{id}/items/manual-order:
     post:
       operationId: item_collections_items_manual_order_create
       description: Update manual ordering for a collection (CUSTOM/COMBO). Supports
@@ -5720,7 +5754,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/item-collections/{id}/preview/:
+  /api/v1/item-collections/{id}/preview:
     get:
       operationId: item_collections_preview_retrieve
       description: Preview items that would be included based on smart rules.
@@ -5751,7 +5785,7 @@ paths:
                 required:
                 - data
           description: Preview of items matching smart collection rules
-  /api/v1/items/:
+  /api/v1/items:
     get:
       operationId: items_list
       description: List all menu items for current tenant
@@ -5761,6 +5795,12 @@ paths:
         schema:
           type: integer
         description: Filter by category ID
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
@@ -5791,12 +5831,6 @@ paths:
         schema:
           type: integer
         description: Filter by menu ID
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -5850,6 +5884,11 @@ paths:
         - Batch update items
         - Batch delete items
         - Update stock quantity
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       tags:
       - items
       requestBody:
@@ -5883,7 +5922,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/items/{id}/:
+  /api/v1/items/{id}:
     get:
       operationId: items_retrieve
       description: |-
@@ -5900,6 +5939,11 @@ paths:
         - Batch update items
         - Batch delete items
         - Update stock quantity
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -5943,6 +5987,11 @@ paths:
         - Batch update items
         - Batch delete items
         - Update stock quantity
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -5998,6 +6047,11 @@ paths:
         - Batch update items
         - Batch delete items
         - Update stock quantity
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -6052,6 +6106,11 @@ paths:
         - Batch update items
         - Batch delete items
         - Update stock quantity
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -6066,7 +6125,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/items/{id}/update-stock/:
+  /api/v1/items/{id}/update-stock:
     patch:
       operationId: items_update_stock_partial_update
       description: Update stock quantity for a menu item
@@ -6113,17 +6172,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/items/batch-create/:
+  /api/v1/items/batch-create:
     post:
       operationId: items_batch_create_create
       description: Batch create multiple menu items
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -6174,7 +6233,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/items/batch-delete/:
+  /api/v1/items/batch-delete:
     delete:
       operationId: items_batch_delete_destroy
       description: Batch delete (soft or hard) multiple menu items
@@ -6192,17 +6251,17 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
       parameters: []
-  /api/v1/items/batch-update/:
+  /api/v1/items/batch-update:
     patch:
       operationId: items_batch_update_partial_update
       description: Batch update multiple menu items
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -6246,16 +6305,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/labor/break-types/:
+  /api/v1/labor/break-types:
     get:
       operationId: labor_break_types_list
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -6282,6 +6341,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/labor/break-types operation
     post:
       operationId: labor_break_types_create
       tags:
@@ -6316,8 +6376,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/labor/break-types operation
       parameters: []
-  /api/v1/labor/break-types/{id}/:
+  /api/v1/labor/break-types/{id}:
     get:
       operationId: labor_break_types_retrieve
       parameters:
@@ -6350,6 +6411,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/labor/break-types/{id} operation
     put:
       operationId: labor_break_types_update
       parameters:
@@ -6394,6 +6456,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PUT /api/v1/labor/break-types/{id} operation
     patch:
       operationId: labor_break_types_partial_update
       parameters:
@@ -6437,6 +6500,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PATCH /api/v1/labor/break-types/{id} operation
     delete:
       operationId: labor_break_types_destroy
       parameters:
@@ -6456,7 +6520,8 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/labor/employees/:
+      description: DELETE /api/v1/labor/break-types/{id} operation
+  /api/v1/labor/employees:
     get:
       operationId: labor_employees_list
       description: |-
@@ -6465,12 +6530,12 @@ paths:
         Designed for tenant-scoped viewsets that expose timestamped resources and must support
         incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -6537,7 +6602,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/labor/employees/{id}/:
+  /api/v1/labor/employees/{id}:
     get:
       operationId: labor_employees_retrieve
       description: |-
@@ -6696,7 +6761,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/labor/employees/{id}/archive/:
+  /api/v1/labor/employees/{id}/archive:
     put:
       operationId: labor_employees_archive_update
       description: |-
@@ -6746,7 +6811,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/employees/{id}/jobs/:
+  /api/v1/labor/employees/{id}/jobs:
     put:
       operationId: labor_employees_jobs_update
       description: |-
@@ -6796,7 +6861,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/employees/{id}/performance/:
+  /api/v1/labor/employees/{id}/performance:
     get:
       operationId: labor_employees_performance_retrieve
       description: |-
@@ -6834,7 +6899,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/employees/{id}/shifts/:
+  /api/v1/labor/employees/{id}/shifts:
     get:
       operationId: labor_employees_shifts_retrieve
       description: |-
@@ -6872,7 +6937,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/employees/{id}/time-entries/:
+  /api/v1/labor/employees/{id}/time-entries:
     get:
       operationId: labor_employees_time_entries_retrieve
       description: |-
@@ -6910,7 +6975,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/employees/{id}/unarchive/:
+  /api/v1/labor/employees/{id}/unarchive:
     put:
       operationId: labor_employees_unarchive_update
       description: |-
@@ -6960,7 +7025,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/employees/{id}/wage-overrides/:
+  /api/v1/labor/employees/{id}/wage-overrides:
     put:
       operationId: labor_employees_wage_overrides_update
       description: |-
@@ -7010,7 +7075,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/jobs/:
+  /api/v1/labor/jobs:
     get:
       operationId: labor_jobs_list
       description: |-
@@ -7019,12 +7084,12 @@ paths:
         Designed for tenant-scoped viewsets that expose timestamped resources and must support
         incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -7097,7 +7162,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/labor/jobs/{id}/:
+  /api/v1/labor/jobs/{id}:
     get:
       operationId: labor_jobs_retrieve
       description: |-
@@ -7256,16 +7321,16 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/labor/shifts/:
+  /api/v1/labor/shifts:
     get:
       operationId: labor_shifts_list
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -7292,6 +7357,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/labor/shifts operation
     post:
       operationId: labor_shifts_create
       tags:
@@ -7326,8 +7392,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/labor/shifts operation
       parameters: []
-  /api/v1/labor/shifts/{id}/:
+  /api/v1/labor/shifts/{id}:
     get:
       operationId: labor_shifts_retrieve
       parameters:
@@ -7360,6 +7427,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/labor/shifts/{id} operation
     put:
       operationId: labor_shifts_update
       parameters:
@@ -7404,6 +7472,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PUT /api/v1/labor/shifts/{id} operation
     patch:
       operationId: labor_shifts_partial_update
       parameters:
@@ -7447,6 +7516,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PATCH /api/v1/labor/shifts/{id} operation
     delete:
       operationId: labor_shifts_destroy
       parameters:
@@ -7466,7 +7536,8 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/labor/shifts/{id}/cancel/:
+      description: DELETE /api/v1/labor/shifts/{id} operation
+  /api/v1/labor/shifts/{id}/cancel:
     post:
       operationId: labor_shifts_cancel_create
       parameters:
@@ -7511,7 +7582,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/shifts/{id}/end/:
+      description: POST /api/v1/labor/shifts/{id}/cancel operation
+  /api/v1/labor/shifts/{id}/end:
     post:
       operationId: labor_shifts_end_create
       parameters:
@@ -7556,7 +7628,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/shifts/{id}/start/:
+      description: POST /api/v1/labor/shifts/{id}/end operation
+  /api/v1/labor/shifts/{id}/start:
     post:
       operationId: labor_shifts_start_create
       parameters:
@@ -7601,16 +7674,17 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/time-entries/:
+      description: POST /api/v1/labor/shifts/{id}/start operation
+  /api/v1/labor/time-entries:
     get:
       operationId: labor_time_entries_list
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -7637,6 +7711,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/labor/time-entries operation
     post:
       operationId: labor_time_entries_create
       tags:
@@ -7671,8 +7746,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/labor/time-entries operation
       parameters: []
-  /api/v1/labor/time-entries/{id}/:
+  /api/v1/labor/time-entries/{id}:
     get:
       operationId: labor_time_entries_retrieve
       parameters:
@@ -7705,6 +7781,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/labor/time-entries/{id} operation
     put:
       operationId: labor_time_entries_update
       parameters:
@@ -7749,6 +7826,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PUT /api/v1/labor/time-entries/{id} operation
     patch:
       operationId: labor_time_entries_partial_update
       parameters:
@@ -7792,6 +7870,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: PATCH /api/v1/labor/time-entries/{id} operation
     delete:
       operationId: labor_time_entries_destroy
       parameters:
@@ -7811,7 +7890,8 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/labor/time-entries/{id}/approve/:
+      description: DELETE /api/v1/labor/time-entries/{id} operation
+  /api/v1/labor/time-entries/{id}/approve:
     post:
       operationId: labor_time_entries_approve_create
       parameters:
@@ -7856,7 +7936,8 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/labor/time-entries/clock-in/:
+      description: POST /api/v1/labor/time-entries/{id}/approve operation
+  /api/v1/labor/time-entries/clock-in:
     post:
       operationId: labor_time_entries_clock_in_create
       tags:
@@ -7891,8 +7972,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/labor/time-entries/clock-in operation
       parameters: []
-  /api/v1/labor/time-entries/clock-out/:
+  /api/v1/labor/time-entries/clock-out:
     post:
       operationId: labor_time_entries_clock_out_create
       tags:
@@ -7927,8 +8009,9 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/labor/time-entries/clock-out operation
       parameters: []
-  /api/v1/loyalty/programs/:
+  /api/v1/loyalty/programs:
     get:
       operationId: loyalty_programs_list
       tags:
@@ -7955,6 +8038,7 @@ paths:
                 required:
                 - data
           description: ''
+      description: GET /api/v1/loyalty/programs operation
       parameters: []
     post:
       operationId: loyalty_programs_create
@@ -7990,12 +8074,19 @@ paths:
                 required:
                 - data
           description: ''
+      description: POST /api/v1/loyalty/programs operation
       parameters: []
-  /api/v1/menus/:
+  /api/v1/menus:
     get:
       operationId: menus_list
       description: List all menus for current tenant
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
@@ -8006,12 +8097,6 @@ paths:
         schema:
           type: boolean
         description: Filter by availability status
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -8085,7 +8170,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/menus/{id}/:
+  /api/v1/menus/{id}:
     get:
       operationId: menus_retrieve
       description: Retrieve menu details with all items
@@ -8249,7 +8334,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/menus/{id}/clone/:
+  /api/v1/menus/{id}/clone:
     post:
       operationId: menus_clone_create
       description: Clone an existing menu with all its items
@@ -8294,17 +8379,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error
-  /api/v1/my/coupons/:
+  /api/v1/my/coupons:
     get:
       operationId: my_coupons_list
       description: List coupons available to the authenticated customer.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -8331,19 +8416,19 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/my/reservations/:
+  /api/v1/my/reservations:
     get:
       operationId: my_reservations_list
       description: |-
         Customer self-service reservation endpoint.
         Allows authenticated users to manage their own reservations across tenants.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -8411,7 +8496,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
       parameters: []
-  /api/v1/my/reservations/{id}/:
+  /api/v1/my/reservations/{id}:
     get:
       operationId: my_reservations_retrieve
       description: |-
@@ -8456,12 +8541,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/my/reservations/{id}/cancel/:
+  /api/v1/my/reservations/{id}/cancel:
     post:
       operationId: my_reservations_cancel_create
       description: |-
-        POST /api/v1/reservations/me/{id}/cancel/
-        Legacy alias: POST /api/my/reservations/{id}/cancel/
+        POST /api/v1/reservations/me{id}/cancel/
+        Legacy alias: POST /api/my/reservations{id}/cancel/
         Allows customers to cancel their own upcoming reservations.
       parameters:
       - in: path
@@ -8525,7 +8610,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/orders/:
+  /api/v1/orders:
     get:
       operationId: orders_list
       description: List all orders for the current tenant with optional filtering
@@ -8535,17 +8620,17 @@ paths:
         schema:
           type: string
         description: Filter by business date (YYYY-MM-DD, respects tenant cutoff hour)
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: date
         schema:
           type: string
         description: Filter by calendar ordered date (YYYY-MM-DD)
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -8615,7 +8700,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
       parameters: []
-  /api/v1/orders/{order_pk}/checks/:
+  /api/v1/orders/{order_pk}/checks:
     get:
       operationId: orders_checks_list
       description: ViewSet for managing checks under a specific order.
@@ -8695,7 +8780,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/orders/{order_pk}/checks/{guid}/:
+  /api/v1/orders/{order_pk}/checks/{guid}:
     get:
       operationId: orders_checks_retrieve
       description: ViewSet for managing checks under a specific order.
@@ -8785,7 +8870,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/orders/{order_pk}/checks/{guid}/items/:
+  /api/v1/orders/{order_pk}/checks/{guid}/items:
     post:
       operationId: orders_checks_items_create
       description: Assign order items to this check.
@@ -8849,7 +8934,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/:
+  /api/v1/orders/{id}:
     get:
       operationId: orders_retrieve
       description: |-
@@ -8858,6 +8943,11 @@ paths:
         Permissions:
         - Owner/Admin/Member: can manage all orders in their tenant
         - All operations are tenant-scoped
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -8893,6 +8983,11 @@ paths:
         Permissions:
         - Owner/Admin/Member: can manage all orders in their tenant
         - All operations are tenant-scoped
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -8940,6 +9035,11 @@ paths:
         Permissions:
         - Owner/Admin/Member: can manage all orders in their tenant
         - All operations are tenant-scoped
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -9007,7 +9107,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/apply-discount/:
+  /api/v1/orders/{id}/apply-discount:
     post:
       operationId: orders_apply_discount_create
       description: |-
@@ -9078,23 +9178,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/bills/:
+  /api/v1/orders/{id}/bills:
     get:
       operationId: orders_bills_list
       description: List all bills associated with the specified order.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: path
         name: id
         schema:
           type: string
           pattern: ^[0-9]+$
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -9127,7 +9227,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/create-payment/:
+  /api/v1/orders/{id}/create-payment:
     post:
       operationId: orders_create_payment_create
       description: |-
@@ -9188,7 +9288,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/pay/:
+  /api/v1/orders/{id}/pay:
     post:
       operationId: orders_pay_create
       description: Mark order as paid (SERVED → PAID)
@@ -9243,7 +9343,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/payment-summary/:
+  /api/v1/orders/{id}/payment-summary:
     get:
       operationId: orders_payment_summary_retrieve
       description: |-
@@ -9290,7 +9390,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/payments/:
+  /api/v1/orders/{id}/payments:
     get:
       operationId: orders_payments_list
       description: |-
@@ -9299,18 +9399,18 @@ paths:
         Supports split payments scenario where one order can have multiple payment records.
         Useful for tracking partial payments, refunds, and payment history.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: path
         name: id
         schema:
           type: string
           pattern: ^[0-9]+$
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -9343,7 +9443,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/serve/:
+  /api/v1/orders/{id}/serve:
     post:
       operationId: orders_serve_create
       description: Mark order as served (PENDING → SERVED)
@@ -9398,7 +9498,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/split/:
+  /api/v1/orders/{id}/split:
     post:
       operationId: orders_split_create
       description: Create a split definition for the order's bill.
@@ -9453,23 +9553,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/splits/:
+  /api/v1/orders/{id}/splits:
     get:
       operationId: orders_splits_list
       description: List all split definitions associated with this order.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: path
         name: id
         schema:
           type: string
           pattern: ^[0-9]+$
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -9502,7 +9602,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/status/:
+  /api/v1/orders/{id}/status:
     patch:
       operationId: orders_status_partial_update
       description: Update order status with validation of allowed transitions
@@ -9556,7 +9656,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/{id}/void/:
+  /api/v1/orders/{id}/void:
     post:
       operationId: orders_void_create
       description: Void an order (SERVED → VOID)
@@ -9611,7 +9711,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/orders/stats/:
+  /api/v1/orders/stats:
     get:
       operationId: orders_stats_retrieve
       description: Get order statistics for the current tenant
@@ -9674,11 +9774,17 @@ paths:
                 required:
                 - data
           description: Order statistics
-  /api/v1/payments/:
+  /api/v1/payments:
     get:
       operationId: payments_list
       description: List all payments for the current tenant with optional filtering
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: date
         schema:
@@ -9694,12 +9800,6 @@ paths:
         schema:
           type: integer
         description: Filter by order ID (via associated check)
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -9775,7 +9875,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
       parameters: []
-  /api/v1/payments/{id}/:
+  /api/v1/payments/{id}:
     get:
       operationId: payments_retrieve
       description: |-
@@ -9795,6 +9895,11 @@ paths:
         - fail: Mark payment as failed
         - refund: Process refund for completed payment
         - stats: Get payment statistics
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -9841,6 +9946,11 @@ paths:
         - fail: Mark payment as failed
         - refund: Process refund for completed payment
         - stats: Get payment statistics
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -9899,6 +10009,11 @@ paths:
         - fail: Mark payment as failed
         - refund: Process refund for completed payment
         - stats: Get payment statistics
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -9956,6 +10071,11 @@ paths:
         - fail: Mark payment as failed
         - refund: Process refund for completed payment
         - stats: Get payment statistics
+
+        Pagination:
+        - Uses cursor-based pagination by default (StandardCursorPagination)
+        - Supports legacy page-number pagination for backward compatibility
+        - Legacy usage triggers deprecation headers
       parameters:
       - in: path
         name: id
@@ -9970,7 +10090,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/payments/{id}/complete/:
+  /api/v1/payments/{id}/complete:
     post:
       operationId: payments_complete_create
       description: |-
@@ -10029,7 +10149,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/payments/{id}/fail/:
+  /api/v1/payments/{id}/fail:
     post:
       operationId: payments_fail_create
       description: Mark payment as failed (PENDING/PROCESSING -> FAILED)
@@ -10084,7 +10204,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/payments/{id}/refund/:
+  /api/v1/payments/{id}/refund:
     post:
       operationId: payments_refund_create
       description: |-
@@ -10143,7 +10263,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/payments/stats/:
+  /api/v1/payments/stats:
     get:
       operationId: payments_stats_retrieve
       description: |-
@@ -10261,23 +10381,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/pre-modifier-groups/:
+  /api/v1/pre-modifier-groups:
     get:
       operationId: pre_modifier_groups_list
       description: Manage groups of pre-modifiers that can be attached to product
         options.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
           type: boolean
         description: Filter by active status
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -10347,7 +10467,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/pre-modifier-groups/{guid}/:
+  /api/v1/pre-modifier-groups/{guid}:
     get:
       operationId: pre_modifier_groups_retrieve
       description: Manage groups of pre-modifiers that can be attached to product
@@ -10482,7 +10602,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/pre-modifiers/:
+  /api/v1/pre-modifiers:
     get:
       operationId: pre_modifiers_list
       description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
@@ -10492,17 +10612,17 @@ paths:
         schema:
           type: string
         description: Filter by modifier code (EXTRA/NO/etc.)
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
           type: boolean
         description: Filter by active status
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -10571,7 +10691,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/pre-modifiers/{guid}/:
+  /api/v1/pre-modifiers/{guid}:
     get:
       operationId: pre_modifiers_retrieve
       description: Manage reusable pre-modifiers (EXTRA/NO/etc.) for the active tenant.
@@ -10702,13 +10822,19 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/product-options/:
+  /api/v1/product-options:
     get:
       operationId: product_options_list
       description: |-
         Manage menu item product options within a tenant scope.
         Owners/Admins can write; Members retain read access for operational visibility.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
@@ -10719,12 +10845,6 @@ paths:
         schema:
           type: integer
         description: Filter options by menu item ID
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -10789,7 +10909,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/product-options/{id}/:
+  /api/v1/product-options/{id}:
     get:
       operationId: product_options_retrieve
       description: |-
@@ -10928,12 +11048,18 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/product-variants/:
+  /api/v1/product-variants:
     get:
       operationId: product_variants_list
       description: Manage menu item product variants with SKU lookup and batch stock
         updates.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
@@ -10944,12 +11070,6 @@ paths:
         schema:
           type: integer
         description: Filter variants by menu item ID
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -11013,7 +11133,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/product-variants/{id}/:
+  /api/v1/product-variants/{id}:
     get:
       operationId: product_variants_retrieve
       description: Manage menu item product variants with SKU lookup and batch stock
@@ -11148,18 +11268,18 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/product-variants/batch-update-stock/:
+  /api/v1/product-variants/batch-update-stock:
     post:
       operationId: product_variants_batch_update_stock_create
       description: Batch update stock quantities for variants identified by ID or
         SKU.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -11204,7 +11324,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/product-variants/by-sku/{sku}/:
+  /api/v1/product-variants/by-sku/{sku}:
     get:
       operationId: product_variants_by_sku_retrieve
       description: Fetch a single variant by SKU scoped to the active tenant.
@@ -11241,7 +11361,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/public/reservations/:
+  /api/v1/public/reservations:
     post:
       operationId: public_reservations_create
       description: |-
@@ -11287,7 +11407,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Validation error (e.g., invalid time range, table conflict)
       parameters: []
-  /api/v1/public/reservations/availability/:
+  /api/v1/public/reservations/availability:
     get:
       operationId: public_reservations_availability_retrieve
       description: |-
@@ -11356,7 +11476,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Invalid request parameters
-  /api/v1/public/tenants/:
+  /api/v1/public/tenants:
     get:
       operationId: public_tenants_list
       description: |-
@@ -11388,7 +11508,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/public/tenants/{uuid}/:
+  /api/v1/public/tenants/{uuid}:
     get:
       operationId: public_tenants_retrieve
       description: |-
@@ -11422,22 +11542,22 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/queues/:
+  /api/v1/queues:
     get:
       operationId: queues_list
       description: List all queue tickets for the current tenant with optional filtering
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: date
         schema:
           type: string
         description: Filter by issued date (YYYY-MM-DD)
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -11502,7 +11622,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
       parameters: []
-  /api/v1/queues/{id}/:
+  /api/v1/queues/{id}:
     get:
       operationId: queues_retrieve
       description: |-
@@ -11653,7 +11773,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/queues/{id}/call/:
+  /api/v1/queues/{id}/call:
     post:
       operationId: queues_call_create
       description: Call a waiting customer (WAITING → CALLED)
@@ -11708,7 +11828,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/queues/{id}/cancel/:
+  /api/v1/queues/{id}/cancel:
     post:
       operationId: queues_cancel_create
       description: Cancel a queue ticket (any non-final status → CANCELLED)
@@ -11763,7 +11883,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/queues/{id}/convert-to-reservation/:
+  /api/v1/queues/{id}/convert-to-reservation:
     post:
       operationId: queues_convert_to_reservation_create
       description: |-
@@ -11819,7 +11939,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/queues/{id}/no-show/:
+  /api/v1/queues/{id}/no-show:
     post:
       operationId: queues_no_show_create
       description: Mark a customer as no-show (CALLED → NO_SHOW)
@@ -11874,7 +11994,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/queues/{id}/seat/:
+  /api/v1/queues/{id}/seat:
     post:
       operationId: queues_seat_create
       description: |-
@@ -11931,7 +12051,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/queues/stats/:
+  /api/v1/queues/stats:
     get:
       operationId: queues_stats_retrieve
       description: Get queue statistics for the current tenant
@@ -11994,7 +12114,7 @@ paths:
                 required:
                 - data
           description: Queue statistics
-  /api/v1/register/:
+  /api/v1/register:
     post:
       operationId: register_create
       description: |-
@@ -12040,7 +12160,7 @@ paths:
           description: Validation error (e.g., email already exists, password too
             short)
       parameters: []
-  /api/v1/register-and-create-tenant/:
+  /api/v1/register-and-create-tenant:
     post:
       operationId: register_and_create_tenant_create
       description: Register + create a tenant + set the user as the sole Owner of
@@ -12085,7 +12205,7 @@ paths:
           description: Validation error (e.g., email already exists, password too
             short, tenant name invalid)
       parameters: []
-  /api/v1/reports/cash-flow/:
+  /api/v1/reports/cash-flow:
     get:
       operationId: reports_cash_flow_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12120,7 +12240,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reports/daily-sales/:
+  /api/v1/reports/daily-sales:
     get:
       operationId: reports_daily_sales_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12160,7 +12280,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reports/expense/:
+  /api/v1/reports/expense:
     get:
       operationId: reports_expense_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12200,7 +12320,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reports/export/daily-sales/:
+  /api/v1/reports/export/daily-sales:
     get:
       operationId: reports_export_daily_sales_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12223,7 +12343,7 @@ paths:
       responses:
         '200':
           description: No response body
-  /api/v1/reports/export/revenue/:
+  /api/v1/reports/export/revenue:
     get:
       operationId: reports_export_revenue_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12256,7 +12376,7 @@ paths:
       responses:
         '200':
           description: No response body
-  /api/v1/reports/profit/:
+  /api/v1/reports/profit:
     get:
       operationId: reports_profit_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12291,7 +12411,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reports/revenue/:
+  /api/v1/reports/revenue:
     get:
       operationId: reports_revenue_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12336,7 +12456,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reports/staff-performance/:
+  /api/v1/reports/staff-performance:
     get:
       operationId: reports_staff_performance_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12371,7 +12491,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reports/top-items/:
+  /api/v1/reports/top-items:
     get:
       operationId: reports_top_items_retrieve
       description: Aggregated financial and operational reports for a tenant.
@@ -12411,7 +12531,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/reservations/:
+  /api/v1/reservations:
     get:
       operationId: reservations_list
       description: |-
@@ -12421,12 +12541,12 @@ paths:
         - Owner/Admin/Member: can manage all reservations in their tenant
         - All operations are tenant-scoped
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -12509,7 +12629,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create reservations
       parameters: []
-  /api/v1/reservations/{id}/:
+  /api/v1/reservations/{id}:
     get:
       operationId: reservations_retrieve
       description: |-
@@ -12744,11 +12864,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/{id}/cancel/:
+  /api/v1/reservations/{id}/cancel:
     post:
       operationId: reservations_cancel_create
       description: |-
-        POST /api/reservations/{id}/cancel/
+        POST /api/reservations{id}/cancel/
         Transition: any non-final status -> CANCELLED
       parameters:
       - in: path
@@ -12812,11 +12932,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/{id}/complete/:
+  /api/v1/reservations/{id}/complete:
     post:
       operationId: reservations_complete_create
       description: |-
-        POST /api/reservations/{id}/complete/
+        POST /api/reservations{id}/complete/
         Transition: SEATED -> COMPLETED
         Mark reservation as completed
       parameters:
@@ -12881,11 +13001,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/{id}/confirm/:
+  /api/v1/reservations/{id}/confirm:
     post:
       operationId: reservations_confirm_create
       description: |-
-        POST /api/reservations/{id}/confirm/
+        POST /api/reservations{id}/confirm/
         Transition: PENDING/BOOKED -> CONFIRMED
       parameters:
       - in: path
@@ -12949,11 +13069,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/{id}/create-order/:
+  /api/v1/reservations/{id}/create-order:
     post:
       operationId: reservations_create_order_create
       description: |-
-        POST /api/reservations/{id}/create-order/
+        POST /api/reservations{id}/create-order/
         Create a new order linked to this reservation
 
         This bridges the reservation and ordering workflow. When a customer
@@ -13014,11 +13134,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/reservations/{id}/no-show/:
+  /api/v1/reservations/{id}/no-show:
     post:
       operationId: reservations_no_show_create
       description: |-
-        POST /api/reservations/{id}/no-show/
+        POST /api/reservations{id}/no-show/
         Transition: CONFIRMED/BOOKED/SEATED -> NO_SHOW
         Mark customer as no-show
       parameters:
@@ -13083,28 +13203,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/{id}/orders/:
+  /api/v1/reservations/{id}/orders:
     get:
       operationId: reservations_orders_list
       description: |-
-        GET /api/reservations/{id}/orders/
+        GET /api/reservations{id}/orders/
         List all orders associated with this reservation
 
         Useful for tracking customer's complete dining history for this reservation,
         including multiple courses or split orders.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: path
         name: id
         schema:
           type: string
           pattern: ^[0-9]+$
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -13137,11 +13257,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/reservations/{id}/seat/:
+  /api/v1/reservations/{id}/seat:
     post:
       operationId: reservations_seat_create
       description: |-
-        POST /api/reservations/{id}/seat/
+        POST /api/reservations{id}/seat/
         Transition: CONFIRMED/BOOKED -> SEATED
         Mark customer as seated
       parameters:
@@ -13206,7 +13326,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/availability/:
+  /api/v1/reservations/availability:
     get:
       operationId: reservations_availability_retrieve
       description: |-
@@ -13279,18 +13399,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
-  /api/v1/reservations/batch-cancel/:
+  /api/v1/reservations/batch-cancel:
     post:
       operationId: reservations_batch_cancel_create
       description: Cancel multiple reservations in a single request. Reservations
         already completed, cancelled, or marked as no-show cannot be cancelled again.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -13335,18 +13455,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/reservations/batch-confirm/:
+  /api/v1/reservations/batch-confirm:
     post:
       operationId: reservations_batch_confirm_create
       description: Confirm multiple reservations in a single request. All reservations
         must belong to the active tenant and be in PENDING or BOOKED status.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -13391,19 +13511,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/reservations/me/:
+  /api/v1/reservations/me:
     get:
       operationId: reservations_me_list
       description: |-
         Customer self-service reservation endpoint.
         Allows authenticated users to manage their own reservations across tenants.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -13471,7 +13591,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
       parameters: []
-  /api/v1/reservations/me/{id}/:
+  /api/v1/reservations/me/{id}:
     get:
       operationId: reservations_me_retrieve
       description: |-
@@ -13516,12 +13636,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/reservations/me/{id}/cancel/:
+  /api/v1/reservations/me/{id}/cancel:
     post:
       operationId: reservations_me_cancel_create
       description: |-
-        POST /api/v1/reservations/me/{id}/cancel/
-        Legacy alias: POST /api/my/reservations/{id}/cancel/
+        POST /api/v1/reservations/me{id}/cancel/
+        Legacy alias: POST /api/my/reservations{id}/cancel/
         Allows customers to cancel their own upcoming reservations.
       parameters:
       - in: path
@@ -13585,7 +13705,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Reservation not found
-  /api/v1/revenue-centers/:
+  /api/v1/revenue-centers:
     get:
       operationId: revenue_centers_list
       description: |-
@@ -13594,17 +13714,17 @@ paths:
         Designed for tenant-scoped viewsets that expose timestamped resources and must support
         incremental sync against POS terminals. Works with pagination and respects USE_TZ.
       parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
       - in: query
         name: is_active
         schema:
           type: boolean
         description: Filter by active state.
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       - name: page_size
         required: false
         in: query
@@ -13677,7 +13797,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/revenue-centers/{id}/:
+  /api/v1/revenue-centers/{id}:
     get:
       operationId: revenue_centers_retrieve
       description: |-
@@ -13824,7 +13944,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/revenue-centers/{id}/sales-report/:
+  /api/v1/revenue-centers/{id}/sales-report:
     get:
       operationId: revenue_centers_sales_report_retrieve
       description: |-
@@ -13869,7 +13989,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/schema/:
+  /api/v1/schema:
     get:
       operationId: schema_retrieve
       description: |-
@@ -14198,7 +14318,7 @@ paths:
                 required:
                 - data
           description: ''
-  /api/v1/settings/closures/:
+  /api/v1/settings/closures:
     get:
       operationId: settings_closures_retrieve
       description: |-
@@ -14300,7 +14420,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/settings/general/:
+  /api/v1/settings/general:
     get:
       operationId: settings_general_retrieve
       description: Retrieve or update the tenant's general settings (language & timezone).
@@ -14396,7 +14516,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/settings/reservations/:
+  /api/v1/settings/reservations:
     get:
       operationId: settings_reservations_retrieve
       description: Retrieve or update the tenant's reservation configuration settings.
@@ -14491,7 +14611,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/table-closures/:
+  /api/v1/table-closures:
     get:
       operationId: table_closures_list
       description: |-
@@ -14500,12 +14620,12 @@ paths:
         Permissions: Owner/Admin/Member can manage closures in their tenant
         Used for maintenance, holidays, or blackout periods
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -14587,7 +14707,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create table closures
       parameters: []
-  /api/v1/table-closures/{id}/:
+  /api/v1/table-closures/{id}:
     get:
       operationId: table_closures_retrieve
       description: |-
@@ -14818,7 +14938,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Table closure not found
-  /api/v1/table-features/:
+  /api/v1/table-features:
     get:
       operationId: table_features_list
       description: |-
@@ -14826,12 +14946,12 @@ paths:
 
         Permissions: Owner/Admin/Member can manage features in their tenant
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -14912,7 +15032,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create features
       parameters: []
-  /api/v1/table-features/{id}/:
+  /api/v1/table-features/{id}:
     get:
       operationId: table_features_retrieve
       description: |-
@@ -15139,7 +15259,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Feature not found
-  /api/v1/table-groups/:
+  /api/v1/table-groups:
     get:
       operationId: table_groups_list
       description: |-
@@ -15147,12 +15267,12 @@ paths:
 
         Permissions: Owner/Admin/Member can manage table groups in their tenant
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -15233,7 +15353,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create table groups
       parameters: []
-  /api/v1/table-groups/{id}/:
+  /api/v1/table-groups/{id}:
     get:
       operationId: table_groups_retrieve
       description: |-
@@ -15460,7 +15580,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Table group not found
-  /api/v1/table-holds/:
+  /api/v1/table-holds:
     get:
       operationId: table_holds_list
       description: |-
@@ -15469,12 +15589,12 @@ paths:
         Permissions: Owner/Admin/Member can manage holds in their tenant
         Used for temporary holds (phone reservations, verbal holds)
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -15556,7 +15676,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create table holds
       parameters: []
-  /api/v1/table-holds/{id}/:
+  /api/v1/table-holds/{id}:
     get:
       operationId: table_holds_retrieve
       description: |-
@@ -15787,7 +15907,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Table hold not found
-  /api/v1/table-tags/:
+  /api/v1/table-tags:
     get:
       operationId: table_tags_list
       description: |-
@@ -15795,12 +15915,12 @@ paths:
 
         Permissions: Owner/Admin/Member can manage tags in their tenant
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -15896,7 +16016,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create tags
       parameters: []
-  /api/v1/table-tags/{id}/:
+  /api/v1/table-tags/{id}:
     get:
       operationId: table_tags_retrieve
       description: |-
@@ -16123,7 +16243,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Tag not found
-  /api/v1/table-zones/:
+  /api/v1/table-zones:
     get:
       operationId: table_zones_list
       description: |-
@@ -16131,12 +16251,12 @@ paths:
 
         Permissions: Owner/Admin/Member can manage zones in their tenant
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -16238,7 +16358,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create zones
       parameters: []
-  /api/v1/table-zones/{id}/:
+  /api/v1/table-zones/{id}:
     get:
       operationId: table_zones_retrieve
       description: |-
@@ -16465,7 +16585,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Zone not found
-  /api/v1/tables/:
+  /api/v1/tables:
     get:
       operationId: tables_list
       description: |-
@@ -16474,12 +16594,12 @@ paths:
         Permissions: Owner/Admin/Member can manage tables in their tenant
         Supports filtering by zone, tags, features, and availability
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -16564,7 +16684,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create tables
       parameters: []
-  /api/v1/tables/{id}/:
+  /api/v1/tables/{id}:
     get:
       operationId: tables_retrieve
       description: |-
@@ -16795,11 +16915,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Table not found
-  /api/v1/tables/{id}/current-session/:
+  /api/v1/tables/{id}/current-session:
     get:
       operationId: tables_current_session_retrieve
       description: |-
-        GET /api/tables/{id}/current-session/
+        GET /api/tables{id}/current-session/
         Get current session status for this table
 
         Returns complete state including:
@@ -16843,11 +16963,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/tables/{id}/real-time-status/:
+  /api/v1/tables/{id}/real-time-status:
     get:
       operationId: tables_real_time_status_retrieve
       description: |-
-        GET /api/tables/{id}/real-time-status/
+        GET /api/tables{id}/real-time-status/
         Provide real-time context for a table including queue, reservation, order, and payment data.
       parameters:
       - in: path
@@ -16882,7 +17002,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: ''
-  /api/v1/tables/{id}/transition-state/:
+  /api/v1/tables/{id}/transition-state:
     post:
       operationId: tables_transition_state_create
       description: Atomically transition a table's manual state using the centralized
@@ -16932,18 +17052,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Invalid state transition request
-  /api/v1/tables/batch-create/:
+  /api/v1/tables/batch-create:
     post:
       operationId: tables_batch_create_create
       description: Create multiple tables atomically. Accepts a non-empty JSON array
         where each element matches the single table create payload.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -17006,7 +17126,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to create tables
-  /api/v1/tables/batch-delete/:
+  /api/v1/tables/batch-delete:
     delete:
       operationId: tables_batch_delete_destroy
       description: Deactivate or hard delete multiple tables. By default tables are
@@ -17051,19 +17171,19 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to delete tables
       parameters: []
-  /api/v1/tables/batch-update/:
+  /api/v1/tables/batch-update:
     patch:
       operationId: tables_batch_update_partial_update
       description: Patch multiple tables atomically. Each payload item must include
         the table id and the fields to update. All updates must belong to the active
         tenant.
       parameters:
-      - name: page
+      - name: cursor
         required: false
         in: query
-        description: A page number within the paginated result set.
+        description: The pagination cursor value.
         schema:
-          type: integer
+          type: string
       - name: page_size
         required: false
         in: query
@@ -17126,7 +17246,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: You do not have permission to update tables
-  /api/v1/tenant-memberships/:
+  /api/v1/tenant-memberships:
     get:
       operationId: tenant_memberships_list
       description: |-
@@ -17175,7 +17295,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: User lacks permissions to manage memberships for this tenant
       parameters: []
-  /api/v1/tenant-memberships/{id}/:
+  /api/v1/tenant-memberships/{id}:
     patch:
       operationId: tenant_memberships_partial_update
       description: |-
@@ -17299,7 +17419,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Membership not found within current tenant
-  /api/v1/tenants/:
+  /api/v1/tenants:
     get:
       operationId: tenants_list
       tags:
@@ -17313,6 +17433,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
+      description: GET /api/v1/tenants operation
       parameters: []
     post:
       operationId: tenants_create
@@ -17360,11 +17481,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
+      description: POST /api/v1/tenants operation
       parameters: []
-  /api/v1/tenants/{tenant_uuid}/invitations/:
+  /api/v1/tenants/{tenant_uuid}/invitations:
     get:
       operationId: tenants_invitations_list
-      description: /api/tenants/{tenant_uuid}/invitations/  (create/list)
+      description: /api/tenants/{tenant_uuid}/invitations  (create/list)
       parameters:
       - in: path
         name: tenant_uuid
@@ -17418,7 +17540,7 @@ paths:
           description: Tenant not found
     post:
       operationId: tenants_invitations_create
-      description: /api/tenants/{tenant_uuid}/invitations/  (create/list)
+      description: /api/tenants/{tenant_uuid}/invitations  (create/list)
       parameters:
       - in: path
         name: tenant_uuid
@@ -17484,10 +17606,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Tenant not found
-  /api/v1/tenants/{tenant_uuid}/invitations/{id}/:
+  /api/v1/tenants/{tenant_uuid}/invitations/{id}:
     get:
       operationId: tenants_invitations_retrieve
-      description: /api/tenants/{tenant_uuid}/invitations/  (create/list)
+      description: /api/tenants/{tenant_uuid}/invitations  (create/list)
       parameters:
       - in: path
         name: id
@@ -17528,7 +17650,7 @@ paths:
           description: ''
     patch:
       operationId: tenants_invitations_partial_update
-      description: /api/tenants/{tenant_uuid}/invitations/  (create/list)
+      description: /api/tenants/{tenant_uuid}/invitations  (create/list)
       parameters:
       - in: path
         name: id
@@ -17604,7 +17726,7 @@ paths:
           description: Invitation not found
     delete:
       operationId: tenants_invitations_destroy
-      description: /api/tenants/{tenant_uuid}/invitations/  (create/list)
+      description: /api/tenants/{tenant_uuid}/invitations  (create/list)
       parameters:
       - in: path
         name: id
@@ -17654,11 +17776,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Invitation not found
-  /api/v1/tenants/{uuid}/:
+  /api/v1/tenants/{uuid}:
     get:
       operationId: tenants_retrieve
       description: |-
-        GET /api/tenants/{uuid}/
+        GET /api/tenants/{uuid}
         Owner can view detailed tenant information.
         Admin/Member receive basic tenant data without stats.
       parameters:
@@ -17771,6 +17893,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Tenant not found
+      description: PUT /api/v1/tenants/{uuid} operation
     patch:
       operationId: tenants_partial_update
       parameters:
@@ -17835,6 +17958,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Tenant not found
+      description: PATCH /api/v1/tenants/{uuid} operation
     delete:
       operationId: tenants_destroy
       parameters:
@@ -17869,7 +17993,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Tenant not found
-  /api/v1/tenants/{uuid}/transfer-ownership/:
+      description: DELETE /api/v1/tenants/{uuid} operation
+  /api/v1/tenants/{uuid}/transfer-ownership:
     post:
       operationId: tenants_transfer_ownership_create
       parameters:
@@ -17935,7 +18060,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Tenant not found or not accessible
-  /api/v1/tenants/my-memberships/:
+      description: POST /api/v1/tenants/{uuid}/transfer-ownership operation
+  /api/v1/tenants/my-memberships:
     get:
       operationId: tenants_my_memberships_list
       description: |-
@@ -17973,7 +18099,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
       parameters: []
-  /api/v1/token/:
+  /api/v1/token:
     post:
       operationId: token_create
       description: |-
@@ -18010,7 +18136,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/token/refresh/:
+  /api/v1/token/refresh:
     post:
       operationId: token_refresh_create
       description: |-
@@ -18047,7 +18173,7 @@ paths:
                 - data
           description: ''
       parameters: []
-  /api/v1/users/:
+  /api/v1/users:
     get:
       operationId: users_list
       tags:
@@ -18080,8 +18206,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
+      description: GET /api/v1/users operation
       parameters: []
-  /api/v1/users/{id}/:
+  /api/v1/users/{id}:
     get:
       operationId: users_retrieve
       parameters:
@@ -18126,7 +18253,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: User not found
-  /api/v1/users/me/:
+      description: GET /api/v1/users/{id} operation
+  /api/v1/users/me:
     get:
       operationId: users_me_retrieve
       description: |-
@@ -18159,7 +18287,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Authentication credentials were not provided or are invalid
       parameters: []
-  /api/v1/users/switch-tenant/:
+  /api/v1/users/switch-tenant:
     post:
       operationId: users_switch_tenant_create
       description: |-
@@ -18369,7 +18497,7 @@ components:
           - ORDER_AMOUNT
           - CATEGORY
           type: string
-          x-spec-enum-id: b761e61597f968ef
+          x-spec-enum-id: ce0b7e8967b4f736
           description: Primary trigger category for this add-buy collection
         trigger_configuration:
           description: Structured payload describing trigger specifics (e.g. quantity
@@ -18479,7 +18607,7 @@ components:
           - ORDER_AMOUNT
           - CATEGORY
           type: string
-          x-spec-enum-id: b761e61597f968ef
+          x-spec-enum-id: ce0b7e8967b4f736
           description: Primary trigger category for this add-buy collection
         trigger_configuration:
           description: Structured payload describing trigger specifics (e.g. quantity
@@ -18574,7 +18702,7 @@ components:
           - DISCOUNT_RATE
           - FIXED_PRICE
           type: string
-          x-spec-enum-id: d64b76e30da6c550
+          x-spec-enum-id: d211ad1fe61e18fe
           description: Determines how the add-buy price will be calculated
         discount_rate:
           type: string
@@ -18657,7 +18785,7 @@ components:
           - DISCOUNT_RATE
           - FIXED_PRICE
           type: string
-          x-spec-enum-id: d64b76e30da6c550
+          x-spec-enum-id: d211ad1fe61e18fe
           description: Determines how the add-buy price will be calculated
         discount_rate:
           type: string
@@ -18740,7 +18868,7 @@ components:
           - DISCOUNT_RATE
           - FIXED_PRICE
           type: string
-          x-spec-enum-id: d64b76e30da6c550
+          x-spec-enum-id: d211ad1fe61e18fe
           description: Determines how the add-buy price will be calculated
         discount_rate:
           type: string
@@ -18804,7 +18932,7 @@ components:
           - DISCOUNT_RATE
           - FIXED_PRICE
           type: string
-          x-spec-enum-id: d64b76e30da6c550
+          x-spec-enum-id: d211ad1fe61e18fe
           description: Determines how the add-buy price will be calculated
         discount_rate:
           type: string
@@ -18958,7 +19086,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         status:
           enum:
           - PENDING
@@ -18967,7 +19095,7 @@ components:
           - CANCELLED
           - EXPIRED
           type: string
-          x-spec-enum-id: 770fb830d5325b42
+          x-spec-enum-id: 886642557e305b37
           readOnly: true
         requested_by:
           type: integer
@@ -19074,7 +19202,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         status:
           enum:
           - PENDING
@@ -19083,7 +19211,7 @@ components:
           - CANCELLED
           - EXPIRED
           type: string
-          x-spec-enum-id: 770fb830d5325b42
+          x-spec-enum-id: 886642557e305b37
           readOnly: true
         requested_by:
           type: integer
@@ -19180,7 +19308,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         reason:
           type: string
         request_data: {}
@@ -19206,7 +19334,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         reason:
           type: string
         request_data: {}
@@ -19235,7 +19363,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         condition: {}
         required_role:
           enum:
@@ -19243,7 +19371,7 @@ components:
           - ADMIN
           - MANAGER
           type: string
-          x-spec-enum-id: fcf65d991e423083
+          x-spec-enum-id: f1410601aab2f95b
         is_active:
           type: boolean
         priority:
@@ -19282,7 +19410,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         condition: {}
         required_role:
           enum:
@@ -19290,7 +19418,7 @@ components:
           - ADMIN
           - MANAGER
           type: string
-          x-spec-enum-id: fcf65d991e423083
+          x-spec-enum-id: f1410601aab2f95b
         is_active:
           type: boolean
         priority:
@@ -19474,7 +19602,7 @@ components:
           - LINE_PAY
           - CREDIT_CARD
           type: string
-          x-spec-enum-id: 59bb55a68d801e95
+          x-spec-enum-id: 1039367d86999940
           description: 'Payment method: CASH, LINE_PAY, or CREDIT_CARD'
         amount:
           type: string
@@ -19490,7 +19618,7 @@ components:
           - REFUNDED
           - PARTIALLY_REFUNDED
           type: string
-          x-spec-enum-id: d2e0754ee8a25469
+          x-spec-enum-id: 5228850ee4c9193f
           default: PENDING
           description: Payment status (defaults to PENDING)
         cash_received:
@@ -19775,7 +19903,7 @@ components:
           - BY_RATIO
           - CUSTOM
           type: string
-          x-spec-enum-id: c78fd34e99f8530c
+          x-spec-enum-id: 0f57a17e1f18222a
           readOnly: true
         status:
           enum:
@@ -19783,7 +19911,7 @@ components:
           - FINALIZED
           - CANCELLED
           type: string
-          x-spec-enum-id: 9984d1a310f4e02e
+          x-spec-enum-id: 3bee451058800fa1
           readOnly: true
         original_total:
           type: string
@@ -19876,7 +20004,7 @@ components:
           - SETTLED
           - CANCELLED
           type: string
-          x-spec-enum-id: a117bacffd42857f
+          x-spec-enum-id: 8fba68129e2fc318
           readOnly: true
         bill_id:
           type: integer
@@ -19931,7 +20059,7 @@ components:
           - BY_RATIO
           - CUSTOM
           type: string
-          x-spec-enum-id: c78fd34e99f8530c
+          x-spec-enum-id: 0f57a17e1f18222a
         participants:
           type: array
           items:
@@ -20053,7 +20181,7 @@ components:
           - OPEN
           - CLOSED
           type: string
-          x-spec-enum-id: ec7757c81d9a3565
+          x-spec-enum-id: aa5c8dec31c55daf
           readOnly: true
         is_active:
           type: boolean
@@ -20244,7 +20372,7 @@ components:
           - CLOSED
           - RECONCILED
           type: string
-          x-spec-enum-id: 0b86883d4346c316
+          x-spec-enum-id: 2889cebb570bcc56
         denominations:
           description: Currency denomination breakdown at closing
         reconciled_at:
@@ -20328,7 +20456,7 @@ components:
           - CLOSED
           - RECONCILED
           type: string
-          x-spec-enum-id: 0b86883d4346c316
+          x-spec-enum-id: 2889cebb570bcc56
         opening_balance:
           type: string
           format: decimal
@@ -20394,7 +20522,7 @@ components:
           - CHANGE_FUND
           - OTHER
           type: string
-          x-spec-enum-id: 278e4ede99716f8b
+          x-spec-enum-id: 31fb3dc09f30ebe4
         amount:
           type: string
           format: decimal
@@ -20512,7 +20640,7 @@ components:
           - CHANGE_FUND
           - OTHER
           type: string
-          x-spec-enum-id: 278e4ede99716f8b
+          x-spec-enum-id: 31fb3dc09f30ebe4
         amount:
           type: string
           format: decimal
@@ -20573,7 +20701,7 @@ components:
           - CHANGE_FUND
           - OTHER
           type: string
-          x-spec-enum-id: 278e4ede99716f8b
+          x-spec-enum-id: 31fb3dc09f30ebe4
         amount:
           type: string
           format: decimal
@@ -20759,7 +20887,7 @@ components:
           - PAID
           - CLOSED
           type: string
-          x-spec-enum-id: 8ce6d2a203730e43
+          x-spec-enum-id: cfcd9a6d2fd132be
           readOnly: true
         opened_date:
           type: string
@@ -20856,7 +20984,7 @@ components:
           - PAID
           - CLOSED
           type: string
-          x-spec-enum-id: 8ce6d2a203730e43
+          x-spec-enum-id: cfcd9a6d2fd132be
           readOnly: true
         opened_date:
           type: string
@@ -20945,7 +21073,7 @@ components:
           - PAID
           - CLOSED
           type: string
-          x-spec-enum-id: 8ce6d2a203730e43
+          x-spec-enum-id: cfcd9a6d2fd132be
           readOnly: true
         opened_date:
           type: string
@@ -21081,7 +21209,7 @@ components:
           - FIXED_AMOUNT
           - FREE_ITEM
           type: string
-          x-spec-enum-id: 370cff240faca437
+          x-spec-enum-id: 952122d5f77c2961
         discount_value:
           type: string
           format: decimal
@@ -21176,7 +21304,7 @@ components:
           - FIXED_AMOUNT
           - FREE_ITEM
           type: string
-          x-spec-enum-id: 370cff240faca437
+          x-spec-enum-id: 952122d5f77c2961
         discount_value:
           type: string
           format: decimal
@@ -21264,7 +21392,7 @@ components:
           - USER
           - MANUAL
           type: string
-          x-spec-enum-id: 189e52f43b3bbeca
+          x-spec-enum-id: 654c7167cef244f7
           description: Origin of this customer profile.
         external_identifier:
           type: string
@@ -21349,7 +21477,7 @@ components:
           - USED
           - EXPIRED
           type: string
-          x-spec-enum-id: 3bf9b1734ba1ca1a
+          x-spec-enum-id: ed985262c253b596
           readOnly: true
         issued_at:
           type: string
@@ -21453,7 +21581,7 @@ components:
           - GOLD
           - PLATINUM
           type: string
-          x-spec-enum-id: 56553419c29c0538
+          x-spec-enum-id: 090b5a8472b1704e
           readOnly: true
         tier_config:
           type: object
@@ -21546,7 +21674,7 @@ components:
           - USER
           - MANUAL
           type: string
-          x-spec-enum-id: 189e52f43b3bbeca
+          x-spec-enum-id: 654c7167cef244f7
           description: Origin of this customer profile.
         external_identifier:
           type: string
@@ -21930,7 +22058,7 @@ components:
           - marketing
           - other
           type: string
-          x-spec-enum-id: 8dcf0b82048ef7a5
+          x-spec-enum-id: 36f6570744edb933
           readOnly: true
         description:
           type: string
@@ -21948,7 +22076,7 @@ components:
           - line_pay
           - other
           type: string
-          x-spec-enum-id: 095de7ffe7bcf2af
+          x-spec-enum-id: 49f8143378ff6627
           readOnly: true
         note:
           type: string
@@ -22029,7 +22157,7 @@ components:
           - marketing
           - other
           type: string
-          x-spec-enum-id: 8dcf0b82048ef7a5
+          x-spec-enum-id: 36f6570744edb933
         description:
           type: string
           minLength: 1
@@ -22046,7 +22174,7 @@ components:
           - line_pay
           - other
           type: string
-          x-spec-enum-id: 095de7ffe7bcf2af
+          x-spec-enum-id: 49f8143378ff6627
         note:
           type: string
       required:
@@ -22118,7 +22246,7 @@ components:
           - ZERO
           - EXEMPT
           type: string
-          x-spec-enum-id: bad9f53b073ec07b
+          x-spec-enum-id: c87d455f93a79bb4
           readOnly: true
         currency:
           type: string
@@ -22167,7 +22295,7 @@ components:
           - Y
           - N
           type: string
-          x-spec-enum-id: a16595a97b62e489
+          x-spec-enum-id: ee8c393c0f0fed79
         remark:
           type: string
         void_reason:
@@ -22482,7 +22610,7 @@ components:
           - Y
           - N
           type: string
-          x-spec-enum-id: a16595a97b62e489
+          x-spec-enum-id: ee8c393c0f0fed79
         remark:
           type: string
         metadata: {}
@@ -22543,7 +22671,7 @@ components:
           - EXHAUSTED
           - ARCHIVED
           type: string
-          x-spec-enum-id: 2b61c01bbfe084c7
+          x-spec-enum-id: 56f3bab36bc91241
         activation_date:
           type: string
           format: date
@@ -22615,7 +22743,7 @@ components:
           - EXHAUSTED
           - ARCHIVED
           type: string
-          x-spec-enum-id: 2b61c01bbfe084c7
+          x-spec-enum-id: 56f3bab36bc91241
         activation_date:
           type: string
           format: date
@@ -22665,7 +22793,7 @@ components:
           - smart
           - combo
           type: string
-          x-spec-enum-id: 458d07f447ef1e54
+          x-spec-enum-id: 3d920b63a78d1f3a
         is_active:
           type: boolean
         is_currently_available:
@@ -22799,7 +22927,7 @@ components:
           - smart
           - combo
           type: string
-          x-spec-enum-id: 458d07f447ef1e54
+          x-spec-enum-id: 3d920b63a78d1f3a
         is_active:
           type: boolean
         is_currently_available:
@@ -22949,7 +23077,7 @@ components:
           - smart
           - combo
           type: string
-          x-spec-enum-id: 458d07f447ef1e54
+          x-spec-enum-id: 3d920b63a78d1f3a
         is_active:
           type: boolean
         display_order:
@@ -23001,7 +23129,7 @@ components:
           - smart
           - combo
           type: string
-          x-spec-enum-id: 458d07f447ef1e54
+          x-spec-enum-id: 3d920b63a78d1f3a
         is_active:
           type: boolean
         display_order:
@@ -23195,7 +23323,7 @@ components:
           - ADJUST
           - EXPIRE
           type: string
-          x-spec-enum-id: 4cdbeeb29027ea6c
+          x-spec-enum-id: 499be2a315b5051d
           readOnly: true
         points:
           type: integer
@@ -23269,7 +23397,7 @@ components:
           - admin
           - member
           type: string
-          x-spec-enum-id: 5a7b0c912afcd627
+          x-spec-enum-id: 9780375b7e256eb6
           readOnly: true
           title: Membership Role
         created_at:
@@ -23940,7 +24068,7 @@ components:
           - CANCELLED
           - VOID
           type: string
-          x-spec-enum-id: 20ec7dc0d83edbf1
+          x-spec-enum-id: 41b8fd317f8472cb
         customer_name:
           type: string
           maxLength: 80
@@ -24118,7 +24246,7 @@ components:
           - LINE_PAY
           - CREDIT_CARD
           type: string
-          x-spec-enum-id: 59bb55a68d801e95
+          x-spec-enum-id: 1039367d86999940
           description: 'Payment method: CASH, LINE_PAY, or CREDIT_CARD'
         amount:
           type: string
@@ -24134,7 +24262,7 @@ components:
           - REFUNDED
           - PARTIALLY_REFUNDED
           type: string
-          x-spec-enum-id: d2e0754ee8a25469
+          x-spec-enum-id: 5228850ee4c9193f
           default: PENDING
           description: Payment status (defaults to PENDING)
         cash_received:
@@ -24532,7 +24660,7 @@ components:
           - CANCELLED
           - VOID
           type: string
-          x-spec-enum-id: 20ec7dc0d83edbf1
+          x-spec-enum-id: 41b8fd317f8472cb
         customer_name:
           type: string
           maxLength: 80
@@ -24591,25 +24719,18 @@ components:
     PaginatedApprovalRequestList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24619,25 +24740,18 @@ components:
     PaginatedApprovalRuleList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24647,25 +24761,18 @@ components:
     PaginatedBillListList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24675,25 +24782,18 @@ components:
     PaginatedBillSplitList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24703,25 +24803,18 @@ components:
     PaginatedBreakTypeList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24731,25 +24824,18 @@ components:
     PaginatedCashDrawerSessionListList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24759,25 +24845,18 @@ components:
     PaginatedCashEntryListList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24787,25 +24866,18 @@ components:
     PaginatedCustomerCouponList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24815,25 +24887,18 @@ components:
     PaginatedCustomerList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24843,25 +24908,18 @@ components:
     PaginatedEmployeeList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24871,25 +24929,18 @@ components:
     PaginatedInvoiceAllowanceList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24899,25 +24950,18 @@ components:
     PaginatedInvoiceList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24927,25 +24971,18 @@ components:
     PaginatedInvoiceTrackList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24955,25 +24992,18 @@ components:
     PaginatedItemCollectionListList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -24983,25 +25013,18 @@ components:
     PaginatedJobList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25011,25 +25034,18 @@ components:
     PaginatedLoyaltyTransactionList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25039,25 +25055,18 @@ components:
     PaginatedMenuCategoryList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25067,25 +25076,18 @@ components:
     PaginatedMenuItemList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25095,25 +25097,18 @@ components:
     PaginatedMenuList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25123,25 +25118,18 @@ components:
     PaginatedOrderList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25151,25 +25139,18 @@ components:
     PaginatedPaymentList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25179,25 +25160,18 @@ components:
     PaginatedPreModifierGroupList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25207,25 +25181,18 @@ components:
     PaginatedPreModifierList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25235,25 +25202,18 @@ components:
     PaginatedProductOptionList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25263,25 +25223,18 @@ components:
     PaginatedProductVariantList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25291,25 +25244,18 @@ components:
     PaginatedReservationList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25319,25 +25265,18 @@ components:
     PaginatedRevenueCenterList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25347,25 +25286,18 @@ components:
     PaginatedShiftList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25375,25 +25307,18 @@ components:
     PaginatedTableList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25403,25 +25328,18 @@ components:
     PaginatedTableTagList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25431,25 +25349,18 @@ components:
     PaginatedTableZoneList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25459,25 +25370,18 @@ components:
     PaginatedTimeEntryList:
       type: object
       required:
-      - count
       - results
       properties:
-        count:
-          type: integer
-          example: 123
-          format: int64
-          minimum: 0
-          maximum: 9007199254740991
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=4
+          example: https://api.table-booking.app/api/v1/page-token
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?page=2
+          example: https://api.table-booking.app/api/v1/page-token
         results:
           type: array
           items:
@@ -25514,7 +25418,7 @@ components:
           - ORDER_AMOUNT
           - CATEGORY
           type: string
-          x-spec-enum-id: b761e61597f968ef
+          x-spec-enum-id: ce0b7e8967b4f736
           description: Primary trigger category for this add-buy collection
         trigger_configuration:
           description: Structured payload describing trigger specifics (e.g. quantity
@@ -25606,7 +25510,7 @@ components:
           - DISCOUNT_RATE
           - FIXED_PRICE
           type: string
-          x-spec-enum-id: d64b76e30da6c550
+          x-spec-enum-id: d211ad1fe61e18fe
           description: Determines how the add-buy price will be calculated
         discount_rate:
           type: string
@@ -25653,7 +25557,7 @@ components:
           - PRICE_CHANGE
           - ATTENDANCE_OVERRIDE
           type: string
-          x-spec-enum-id: c1ddec0680df4198
+          x-spec-enum-id: cb93dbc91bfcab50
         condition: {}
         required_role:
           enum:
@@ -25661,7 +25565,7 @@ components:
           - ADMIN
           - MANAGER
           type: string
-          x-spec-enum-id: fcf65d991e423083
+          x-spec-enum-id: f1410601aab2f95b
         is_active:
           type: boolean
         priority:
@@ -25837,7 +25741,7 @@ components:
           - CHANGE_FUND
           - OTHER
           type: string
-          x-spec-enum-id: 278e4ede99716f8b
+          x-spec-enum-id: 31fb3dc09f30ebe4
         amount:
           type: string
           format: decimal
@@ -25909,7 +25813,7 @@ components:
           - FIXED_AMOUNT
           - FREE_ITEM
           type: string
-          x-spec-enum-id: 370cff240faca437
+          x-spec-enum-id: 952122d5f77c2961
         discount_value:
           type: string
           format: decimal
@@ -25987,7 +25891,7 @@ components:
           - USER
           - MANUAL
           type: string
-          x-spec-enum-id: 189e52f43b3bbeca
+          x-spec-enum-id: 654c7167cef244f7
           description: Origin of this customer profile.
         external_identifier:
           type: string
@@ -26056,7 +25960,7 @@ components:
           - marketing
           - other
           type: string
-          x-spec-enum-id: 8dcf0b82048ef7a5
+          x-spec-enum-id: 36f6570744edb933
         description:
           type: string
           minLength: 1
@@ -26073,7 +25977,7 @@ components:
           - line_pay
           - other
           type: string
-          x-spec-enum-id: 095de7ffe7bcf2af
+          x-spec-enum-id: 49f8143378ff6627
         note:
           type: string
     PatchedInvoiceAllowanceRequest:
@@ -26141,7 +26045,7 @@ components:
           - Y
           - N
           type: string
-          x-spec-enum-id: a16595a97b62e489
+          x-spec-enum-id: ee8c393c0f0fed79
         remark:
           type: string
         metadata: {}
@@ -26181,7 +26085,7 @@ components:
           - EXHAUSTED
           - ARCHIVED
           type: string
-          x-spec-enum-id: 2b61c01bbfe084c7
+          x-spec-enum-id: 56f3bab36bc91241
         activation_date:
           type: string
           format: date
@@ -26215,7 +26119,7 @@ components:
           - smart
           - combo
           type: string
-          x-spec-enum-id: 458d07f447ef1e54
+          x-spec-enum-id: 3d920b63a78d1f3a
         is_active:
           type: boolean
         display_order:
@@ -26433,7 +26337,7 @@ components:
           - CANCELLED
           - VOID
           type: string
-          x-spec-enum-id: 20ec7dc0d83edbf1
+          x-spec-enum-id: 41b8fd317f8472cb
         customer_name:
           type: string
           maxLength: 80
@@ -26499,7 +26403,7 @@ components:
           - CANCELLED
           - VOID
           type: string
-          x-spec-enum-id: 20ec7dc0d83edbf1
+          x-spec-enum-id: 41b8fd317f8472cb
           description: New status for the order
         note:
           type: string
@@ -26521,7 +26425,7 @@ components:
           - LINE_PAY
           - CREDIT_CARD
           type: string
-          x-spec-enum-id: 59bb55a68d801e95
+          x-spec-enum-id: 1039367d86999940
         status:
           enum:
           - PENDING
@@ -26531,7 +26435,7 @@ components:
           - REFUNDED
           - PARTIALLY_REFUNDED
           type: string
-          x-spec-enum-id: d2e0754ee8a25469
+          x-spec-enum-id: 5228850ee4c9193f
         amount:
           type: string
           format: decimal
@@ -26610,7 +26514,7 @@ components:
           - SIDE
           - HEAVY
           type: string
-          x-spec-enum-id: 65b53d415edde80b
+          x-spec-enum-id: 2313751d49a6bb01
         name_translations: {}
         is_active:
           type: boolean
@@ -26654,7 +26558,7 @@ components:
           - INDEPENDENT
           - ADDITIVE
           type: string
-          x-spec-enum-id: 45cf5446986303c5
+          x-spec-enum-id: de5c51ac251d2f5b
           description: Defines how child option prices should be combined with this
             option
         pre_modifier_group:
@@ -26744,7 +26648,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: fe2af952b089f73b
+          x-spec-enum-id: 6ae9c5302b301b30
         table:
           type: integer
           nullable: true
@@ -26781,7 +26685,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: 9b46f8408005470d
+          x-spec-enum-id: f099be9962b18c1e
         start:
           type: string
           format: date-time
@@ -27017,7 +26921,7 @@ components:
           - DIRTY
           - MAINTENANCE
           type: string
-          x-spec-enum-id: 7dfdf46863bba96e
+          x-spec-enum-id: 4c045bf4a1a471cd
           description: Manual table state managed by the state machine
         is_active:
           type: boolean
@@ -27092,7 +26996,7 @@ components:
           - CANCELLED
           - EXPIRED
           type: string
-          x-spec-enum-id: 7cdb73239eae9ddc
+          x-spec-enum-id: 38b008107bc82156
     PatchedTenantMembershipManageRequest:
       type: object
       description: |-
@@ -27255,7 +27159,7 @@ components:
           - LINE_PAY
           - CREDIT_CARD
           type: string
-          x-spec-enum-id: 59bb55a68d801e95
+          x-spec-enum-id: 1039367d86999940
         status:
           enum:
           - PENDING
@@ -27265,7 +27169,7 @@ components:
           - REFUNDED
           - PARTIALLY_REFUNDED
           type: string
-          x-spec-enum-id: d2e0754ee8a25469
+          x-spec-enum-id: 5228850ee4c9193f
         amount:
           type: string
           format: decimal
@@ -27452,7 +27356,7 @@ components:
           - LINE_PAY
           - CREDIT_CARD
           type: string
-          x-spec-enum-id: 59bb55a68d801e95
+          x-spec-enum-id: 1039367d86999940
         status:
           enum:
           - PENDING
@@ -27462,7 +27366,7 @@ components:
           - REFUNDED
           - PARTIALLY_REFUNDED
           type: string
-          x-spec-enum-id: d2e0754ee8a25469
+          x-spec-enum-id: 5228850ee4c9193f
         amount:
           type: string
           format: decimal
@@ -27536,7 +27440,7 @@ components:
           - SIDE
           - HEAVY
           type: string
-          x-spec-enum-id: 65b53d415edde80b
+          x-spec-enum-id: 2313751d49a6bb01
         name_translations: {}
         is_active:
           type: boolean
@@ -27638,7 +27542,7 @@ components:
           - SIDE
           - HEAVY
           type: string
-          x-spec-enum-id: 65b53d415edde80b
+          x-spec-enum-id: 2313751d49a6bb01
         name_translations: {}
         is_active:
           type: boolean
@@ -27692,7 +27596,7 @@ components:
           - INDEPENDENT
           - ADDITIVE
           type: string
-          x-spec-enum-id: 45cf5446986303c5
+          x-spec-enum-id: de5c51ac251d2f5b
           description: Defines how child option prices should be combined with this
             option
         pre_modifier_group:
@@ -27769,7 +27673,7 @@ components:
           - INDEPENDENT
           - ADDITIVE
           type: string
-          x-spec-enum-id: 45cf5446986303c5
+          x-spec-enum-id: de5c51ac251d2f5b
           description: Defines how child option prices should be combined with this
             option
         pre_modifier_group:
@@ -28320,7 +28224,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: fe2af952b089f73b
+          x-spec-enum-id: 6ae9c5302b301b30
         table:
           type: integer
           nullable: true
@@ -28469,7 +28373,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: fe2af952b089f73b
+          x-spec-enum-id: 6ae9c5302b301b30
         table:
           type: integer
           nullable: true
@@ -28499,7 +28403,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: fe2af952b089f73b
+          x-spec-enum-id: 6ae9c5302b301b30
           description: New status for the queue ticket
         table_id:
           type: integer
@@ -28612,7 +28516,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: 9b46f8408005470d
+          x-spec-enum-id: f099be9962b18c1e
         start:
           type: string
           format: date-time
@@ -28911,7 +28815,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: 9b46f8408005470d
+          x-spec-enum-id: f099be9962b18c1e
         start:
           type: string
           format: date-time
@@ -28975,7 +28879,7 @@ components:
           - CANCELLED
           - NO_SHOW
           type: string
-          x-spec-enum-id: 9b46f8408005470d
+          x-spec-enum-id: f099be9962b18c1e
         start:
           type: string
           format: date-time
@@ -29336,7 +29240,7 @@ components:
           - completed
           - cancelled
           type: string
-          x-spec-enum-id: 8ad698d55d36e60b
+          x-spec-enum-id: 61d4fc17c497f9b6
           readOnly: true
         notes:
           type: string
@@ -29577,7 +29481,7 @@ components:
           - DIRTY
           - MAINTENANCE
           type: string
-          x-spec-enum-id: 7dfdf46863bba96e
+          x-spec-enum-id: 4c045bf4a1a471cd
           description: Manual table state managed by the state machine
         current_state:
           type: string
@@ -30158,7 +30062,7 @@ components:
           - DIRTY
           - MAINTENANCE
           type: string
-          x-spec-enum-id: 7dfdf46863bba96e
+          x-spec-enum-id: 4c045bf4a1a471cd
           description: Manual table state managed by the state machine
         is_active:
           type: boolean
@@ -30211,7 +30115,7 @@ components:
           - DIRTY
           - MAINTENANCE
           type: string
-          x-spec-enum-id: 7dfdf46863bba96e
+          x-spec-enum-id: 4c045bf4a1a471cd
         reason:
           type: string
           maxLength: 120
@@ -30621,7 +30525,7 @@ components:
           - CANCELLED
           - EXPIRED
           type: string
-          x-spec-enum-id: 7cdb73239eae9ddc
+          x-spec-enum-id: 38b008107bc82156
           readOnly: true
         expires_at:
           type: string
@@ -31224,22 +31128,27 @@ components:
           type: string
           format: uri
           nullable: true
+          example: https://api.table-booking.app/api/v1/page-token
         next:
           type: string
           format: uri
           nullable: true
+          example: https://api.table-booking.app/api/v1/page-token
         prev:
           type: string
           format: uri
           nullable: true
+          example: https://api.table-booking.app/api/v1/page-token
         first:
           type: string
           format: uri
           nullable: true
+          example: https://api.table-booking.app/api/v1/page-token
         last:
           type: string
           format: uri
           nullable: true
+          example: https://api.table-booking.app/api/v1/page-token
       description: Pagination links for HATEOAS-style navigation.
   securitySchemes:
     jwtAuth:
@@ -31249,3 +31158,90 @@ components:
 servers:
 - url: /api/v1
   description: Version 1
+tags:
+- name: add-buy-collections
+  description: add-buy-collections operations
+- name: add-buy-items
+  description: add-buy-items operations
+- name: add-buys
+  description: add-buys operations
+- name: approval-requests
+  description: approval-requests operations
+- name: approval-rules
+  description: approval-rules operations
+- name: bills
+  description: bills operations
+- name: cash-drawer-sessions
+  description: cash-drawer-sessions operations
+- name: cash-drawers
+  description: cash-drawers operations
+- name: cash-entries
+  description: cash-entries operations
+- name: categories
+  description: categories operations
+- name: coupons
+  description: coupons operations
+- name: customers
+  description: customers operations
+- name: einvoices
+  description: einvoices operations
+- name: expenses
+  description: expenses operations
+- name: invitations
+  description: invitations operations
+- name: item-collections
+  description: item-collections operations
+- name: items
+  description: items operations
+- name: labor
+  description: labor operations
+- name: loyalty
+  description: loyalty operations
+- name: menus
+  description: menus operations
+- name: my
+  description: my operations
+- name: orders
+  description: orders operations
+- name: payments
+  description: payments operations
+- name: pre-modifier-groups
+  description: pre-modifier-groups operations
+- name: pre-modifiers
+  description: pre-modifiers operations
+- name: product-options
+  description: product-options operations
+- name: product-variants
+  description: product-variants operations
+- name: public-reservations
+  description: public-reservations operations
+- name: public-tenants
+  description: public-tenants operations
+- name: queues
+  description: queues operations
+- name: register
+  description: register operations
+- name: register-and-create-tenant
+  description: register-and-create-tenant operations
+- name: reports
+  description: reports operations
+- name: reservations
+  description: reservations operations
+- name: revenue-centers
+  description: revenue-centers operations
+- name: schema
+  description: schema operations
+- name: schema.json
+  description: schema.json operations
+- name: settings
+  description: settings operations
+- name: tables
+  description: tables operations
+- name: tenant-memberships
+  description: tenant-memberships operations
+- name: tenants
+  description: tenants operations
+- name: token
+  description: token operations
+- name: users
+  description: users operations

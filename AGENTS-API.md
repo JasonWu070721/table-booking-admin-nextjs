@@ -183,6 +183,58 @@ StaffAttendance → TimeEntry (proxy with field aliasing)
 - **OpenAPI validation**: Orval/Spectral is configured to allow kebab-case paths and the `error.details[]` structure (see `orval.config.ts`); do not rename routes or introduce `errors[]`.
 - **Incremental sync**: Menu categories/items, employees/jobs, tables/zones, revenue centers, and product options/variants support `updated_after` (ISO-8601, tz-aware) to filter by `updated_at >=` and return `X-Last-Modified` with the newest `updated_at` in the current page (works with pagination).
 
+### Pagination (2025-11-27)
+
+All list endpoints use **cursor-based pagination** (`StandardCursorPagination`) for efficient traversal of large datasets:
+
+**Default Behavior:**
+
+- Page size: 100 records (configurable via `page_size` parameter, max 300)
+- Ordering: `-created_at` (most recent first)
+- Navigation: Sequential only (next/previous) via opaque cursor tokens
+- Consistency: Results remain stable even when data changes between requests
+
+**Query Parameters:**
+
+- `cursor`: Opaque pagination token (obtained from `links.next` or `links.previous`)
+- `page_size`: Number of records per page (1-300, default 100)
+
+**Response Structure:**
+
+```json
+{
+  "data": [...],
+  "meta": {
+    "count": 100,
+    "has_next": true,
+    "has_previous": false
+  },
+  "links": {
+    "next": "https://api.example.com/api/v1/orders/?cursor=cD0yMDIz...",
+    "previous": null
+  }
+}
+```
+
+**Response Headers:**
+
+- `X-Next-Page-Token`: Contains cursor value for next page (only when `has_next` is true)
+- `PaginationHeaderMixin` extracts the cursor from `links.next` to set `X-Next-Page-Token`, and `meta.count` always reflects the current page size (not the total dataset size) to align with cursor semantics.
+
+**Backward Compatibility:**
+
+- Legacy `page` parameter still supported but deprecated
+- Using `page` triggers deprecation headers (`Deprecation: true` + `Link` with migration guide)
+- Legacy format includes `total_count`, `total_pages`, `first`, and `last` links
+- See `docs/PAGINATION_MIGRATION.md` for migration guide
+
+**Benefits over offset pagination:**
+
+- No duplicate or missing records when data changes
+- Better performance for large datasets
+- No expensive COUNT queries
+- Consistent behavior across high-volume endpoints
+
 ### Business Date Handling
 
 - Tenants configure a `business_day_end_hour` (default 4AM) that defines when the trading day rolls to the next business date.
