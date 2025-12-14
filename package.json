@@ -19,16 +19,15 @@
     "@mui/x-date-pickers": "^8.19.0",
     "@refinedev/core": "^5.0.6",
     "@refinedev/mui": "^7.0.1",
-    "@umijs/openapi": "^1.14.1",
     "axios": "^1.13.2",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.19",
-    "next": "16.0.2",
+    "next": "^16.0.10",
     "next-auth": "^4.24.13",
-    "next-intl": "^4.5.3",
-    "orval": "^7.13.2",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "next-intl": "^4.5.8",
+    "orval": "^7.17.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -36,7 +35,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.0.2",
+    "eslint-config-next": "^16.0.10",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

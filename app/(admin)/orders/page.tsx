@@ -3,7 +3,6 @@
 
 import { useMemo, useState } from "react";
 import {
-    Box,
     Button,
     Chip,
     Dialog,
@@ -16,10 +15,9 @@ import {
     Select,
     Stack,
     TextField,
-    Typography,
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem, type GridColDef } from "@mui/x-data-grid";
-import { useDataGrid } from "@refinedev/mui";
+import { useDataGrid, List } from "@refinedev/mui";
 import { HttpError, useCreate, useDelete, useInvalidate, useList, useUpdate } from "@refinedev/core";
 import ReplayIcon from "@mui/icons-material/Replay";
 import AddIcon from "@mui/icons-material/Add";
@@ -121,7 +119,7 @@ export default function OrdersPage() {
         setEditingOrder(order);
         setFormData({
             table: order.table ?? "",
-            status: (order as any).status ?? OrderRequestStatus.PENDING,
+            status: OrderRequestStatus.PENDING,
             customer_name: order.customer_name ?? "",
             customer_phone: order.customer_phone ?? "",
             customer_email: order.customer_email ?? "",
@@ -223,13 +221,17 @@ export default function OrdersPage() {
 
     const columns: GridColDef<Order>[] = useMemo(
         () => [
-            { field: "id", headerName: "ID", width: 90 },
-            { field: "order_number", headerName: "Order #", flex: 1, minWidth: 160 },
-            { field: "table", headerName: "Table", width: 110 },
+            { field: "id", headerName: "ID", minWidth: 80, flex: 0.3 },
+
+            { field: "order_number", headerName: "Order #", minWidth: 160, flex: 1 },
+
+            { field: "table", headerName: "Table", minWidth: 100, flex: 0.4 },
+
             {
                 field: "status",
                 headerName: "Status",
-                width: 140,
+                minWidth: 140,
+                flex: 0.5,
                 renderCell: (params) => (
                     <Chip
                         size="small"
@@ -238,43 +240,52 @@ export default function OrdersPage() {
                     />
                 ),
             },
+
             {
                 field: "subtotal",
                 headerName: "Subtotal",
-                width: 140,
+                minWidth: 120,
+                flex: 0.6,
                 valueFormatter: (params) => formatCurrency(params?.value as string | undefined),
             },
+
             {
                 field: "tax",
                 headerName: "Tax",
-                width: 120,
+                minWidth: 120,
+                flex: 0.4,
                 valueFormatter: (params) => formatCurrency(params?.value as string | undefined),
             },
+
             {
                 field: "total",
                 headerName: "Total",
-                width: 140,
+                minWidth: 130,
+                flex: 0.6,
                 valueFormatter: (params) => formatCurrency(params?.value as string | undefined),
             },
+
             {
                 field: "ordered_at",
                 headerName: "Ordered At",
-                flex: 1.1,
                 minWidth: 200,
+                flex: 1.2,
                 valueFormatter: (params) => formatDateTime(params?.value as string | undefined),
             },
+
             {
                 field: "updated_at",
                 headerName: "Updated At",
-                flex: 1.1,
                 minWidth: 200,
+                flex: 1.2,
                 valueFormatter: (params) => formatDateTime(params?.value as string | undefined),
             },
+
             {
                 field: "actions",
                 type: "actions",
                 headerName: "Actions",
-                width: 130,
+                width: 120,
                 getActions: (params) => [
                     <GridActionsCellItem
                         key="edit"
@@ -291,23 +302,15 @@ export default function OrdersPage() {
                 ],
             },
         ],
-        []
+        [handleDelete, handleOpenEdit]
     );
 
     const isSubmitting = createMutation.isLoading || updateMutation.isLoading;
 
     return (
-        <Box sx={{ width: "100%", height: "calc(100vh - 120px)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3, gap: 2 }}>
-                <Box>
-                    <Typography variant="h4" component="h1">
-                        Orders
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Monitor, create, and update orders across the restaurant.
-                    </Typography>
-                </Box>
-                <Stack direction="row" spacing={1}>
+        <List
+            headerButtons={
+                <>
                     <Button
                         variant="outlined"
                         startIcon={<ReplayIcon />}
@@ -322,19 +325,15 @@ export default function OrdersPage() {
                     >
                         Create Order
                     </Button>
-                </Stack>
-            </Stack>
-
+                </>
+            }
+        >
             <DataGrid
                 {...dataGridProps}
                 columns={columns}
                 pageSizeOptions={[10, 25, 50, 100]}
                 disableRowSelectionOnClick
-                sx={{
-                    "& .MuiDataGrid-cell": {
-                        py: 1,
-                    },
-                }}
+                autoHeight
             />
 
             <Dialog
@@ -346,7 +345,7 @@ export default function OrdersPage() {
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>{editingOrder ? "Edit Order" : "Create Order"}</DialogTitle>
                     <DialogContent>
-                        <Stack spacing={3} sx={{ mt: 1 }}>
+                        <Stack spacing={2}>
                             <TextField
                                 select
                                 label="Table"
@@ -354,7 +353,6 @@ export default function OrdersPage() {
                                 fullWidth
                                 value={formData.table}
                                 onChange={(e) => handleInputChange("table", e.target.value === "" ? "" : Number(e.target.value))}
-                                helperText="Select the table associated with this order"
                             >
                                 <MenuItem value="">
                                     <em>Select table</em>
@@ -382,22 +380,19 @@ export default function OrdersPage() {
                                 </Select>
                             </FormControl>
 
-                            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                                <TextField
-                                    label="Customer Name"
-                                    fullWidth
-                                    value={formData.customer_name ?? ""}
-                                    onChange={(e) => handleInputChange("customer_name", e.target.value)}
-                                    slotProps={{ input: { maxLength: 80 } }}
-                                />
-                                <TextField
-                                    label="Customer Phone"
-                                    fullWidth
-                                    value={formData.customer_phone ?? ""}
-                                    onChange={(e) => handleInputChange("customer_phone", e.target.value)}
-                                    slotProps={{ input: { maxLength: 40 } }}
-                                />
-                            </Stack>
+                            <TextField
+                                label="Customer Name"
+                                fullWidth
+                                value={formData.customer_name ?? ""}
+                                onChange={(e) => handleInputChange("customer_name", e.target.value)}
+                            />
+
+                            <TextField
+                                label="Customer Phone"
+                                fullWidth
+                                value={formData.customer_phone ?? ""}
+                                onChange={(e) => handleInputChange("customer_phone", e.target.value)}
+                            />
 
                             <TextField
                                 label="Customer Email"
@@ -405,30 +400,28 @@ export default function OrdersPage() {
                                 type="email"
                                 value={formData.customer_email ?? ""}
                                 onChange={(e) => handleInputChange("customer_email", e.target.value)}
-                                slotProps={{ input: { maxLength: 254 } }}
                             />
 
-                            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                                <TextField
-                                    label="Subtotal"
-                                    fullWidth
-                                    value={formData.subtotal ?? ""}
-                                    onChange={(e) => handleInputChange("subtotal", e.target.value)}
-                                    helperText="Optional manual override"
-                                />
-                                <TextField
-                                    label="Tax"
-                                    fullWidth
-                                    value={formData.tax ?? ""}
-                                    onChange={(e) => handleInputChange("tax", e.target.value)}
-                                />
-                                <TextField
-                                    label="Total"
-                                    fullWidth
-                                    value={formData.total ?? ""}
-                                    onChange={(e) => handleInputChange("total", e.target.value)}
-                                />
-                            </Stack>
+                            <TextField
+                                label="Subtotal"
+                                fullWidth
+                                value={formData.subtotal ?? ""}
+                                onChange={(e) => handleInputChange("subtotal", e.target.value)}
+                            />
+
+                            <TextField
+                                label="Tax"
+                                fullWidth
+                                value={formData.tax ?? ""}
+                                onChange={(e) => handleInputChange("tax", e.target.value)}
+                            />
+
+                            <TextField
+                                label="Total"
+                                fullWidth
+                                value={formData.total ?? ""}
+                                onChange={(e) => handleInputChange("total", e.target.value)}
+                            />
 
                             <TextField
                                 label="Note"
@@ -437,28 +430,24 @@ export default function OrdersPage() {
                                 minRows={2}
                                 value={formData.note ?? ""}
                                 onChange={(e) => handleInputChange("note", e.target.value)}
-                                helperText="Special instructions or comments"
                             />
 
-                            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                                <TextField
-                                    label="Staff Name"
-                                    fullWidth
-                                    value={formData.staff_name ?? ""}
-                                    onChange={(e) => handleInputChange("staff_name", e.target.value)}
-                                    slotProps={{ input: { maxLength: 60 } }}
-                                />
-                                <TextField
-                                    label="Staff ID"
-                                    fullWidth
-                                    value={formData.staff ?? ""}
-                                    onChange={(e) =>
-                                        handleInputChange("staff", e.target.value === "" ? null : Number(e.target.value))
-                                    }
-                                    type="number"
-                                    slotProps={{ htmlInput: { min: 0 } }}
-                                />
-                            </Stack>
+                            <TextField
+                                label="Staff Name"
+                                fullWidth
+                                value={formData.staff_name ?? ""}
+                                onChange={(e) => handleInputChange("staff_name", e.target.value)}
+                            />
+
+                            <TextField
+                                label="Staff ID"
+                                fullWidth
+                                value={formData.staff ?? ""}
+                                onChange={(e) =>
+                                    handleInputChange("staff", e.target.value === "" ? null : Number(e.target.value))
+                                }
+                                type="number"
+                            />
                         </Stack>
                     </DialogContent>
                     <DialogActions>
@@ -469,6 +458,6 @@ export default function OrdersPage() {
                     </DialogActions>
                 </form>
             </Dialog>
-        </Box>
+        </List>
     );
 }

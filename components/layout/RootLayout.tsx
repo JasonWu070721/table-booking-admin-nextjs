@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen} />
 
             {/* Main Content Area */}
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, minWidth: 0 }}>
                 <DrawerHeader />
                 {children}
             </Box>
