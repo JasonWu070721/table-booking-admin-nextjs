@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { usePathname } from "next/navigation";
 import Sidebar from "./Sidebar";
 import AppBarTop from "./AppBar";
+import { resources } from "@/config/resources";
+import { getAutoExpandedItems } from "./sidebarUtils";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -21,7 +24,14 @@ const DrawerHeader = styled("div")(({ theme }) => ({
  * @evaluated 2025-01-20 (Taiwan Time)
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        const shouldAutoOpen =
+            Object.keys(getAutoExpandedItems(resources, pathname)).length > 0;
+        if (shouldAutoOpen) setOpen(true);
+    }, [pathname]);
 
     const handleDrawerOpen = () => {
         setOpen(true);

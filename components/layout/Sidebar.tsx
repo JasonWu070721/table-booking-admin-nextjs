@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import {
@@ -20,6 +20,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { resources, type ResourceItem } from "@/config/resources";
+import { getAutoExpandedItems, isItemActive } from "./sidebarUtils";
 
 const drawerWidth = 240;
 
@@ -85,38 +86,45 @@ interface SidebarProps {
 export default function Sidebar({ open, onClose, onOpen }: SidebarProps) {
     const theme = useTheme();
     const pathname = usePathname();
-    const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
-    const handleToggleExpand = (itemName: string) => {
-        setExpandedItems((prev) => ({
-            ...prev,
-            [itemName]: !prev[itemName],
-        }));
-    };
+    const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
+        () => getAutoExpandedItems(resources, pathname),
+    );
 
-    const handleMenuItemClick = (item: ResourceItem) => {
+    useEffect(() => {
+        setExpandedItems(getAutoExpandedItems(resources, pathname));
+    }, [pathname]);
+
+    const handleMenuItemClick = (item: ResourceItem, isNested = false) => {
+        const hasChildren = (item.children?.length ?? 0) > 0;
+        if (!hasChildren) return;
+
         // If sidebar is collapsed, open it first
         if (!open) {
             onOpen();
             // If item has children, expand it
-            if (item.children && item.children.length > 0) {
-                setExpandedItems((prev) => ({
-                    ...prev,
-                    [item.name]: true,
-                }));
-            }
-        } else {
-            // If sidebar is open and item has children, toggle expand
-            if (item.children && item.children.length > 0) {
-                handleToggleExpand(item.name);
-            }
+            setExpandedItems({ [item.name]: true });
+            return;
         }
+
+        if (isNested) {
+            setExpandedItems((prev) => ({
+                ...prev,
+                [item.name]: !(prev[item.name] ?? false),
+            }));
+            return;
+        }
+
+        setExpandedItems((prev) => {
+            const isExpanded = prev[item.name] ?? false;
+            return isExpanded ? {} : { [item.name]: true };
+        });
     };
 
     const renderMenuItem = (item: ResourceItem, isNested = false) => {
-        const hasChildren = item.children && item.children.length > 0;
+        const hasChildren = (item.children?.length ?? 0) > 0;
         const isExpanded = expandedItems[item.name] ?? false;
-        const isSelected = pathname === item.route || (hasChildren && item.children?.some(child => pathname.startsWith(child.route)));
+        const isSelected = isItemActive(item, pathname);
 
         return (
             <div key={item.name}>
@@ -124,7 +132,7 @@ export default function Sidebar({ open, onClose, onOpen }: SidebarProps) {
                     {hasChildren ? (
                         <ListItemButton
                             selected={isSelected}
-                            onClick={() => handleMenuItemClick(item)}
+                            onClick={() => handleMenuItemClick(item, isNested)}
                             sx={[
                                 {
                                     minHeight: 48,
@@ -176,7 +184,7 @@ export default function Sidebar({ open, onClose, onOpen }: SidebarProps) {
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
                             <ListItemButton
-                                selected={pathname === item.route}
+                                selected={isSelected}
                                 sx={[
                                     {
                                         minHeight: 48,
